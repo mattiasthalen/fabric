@@ -180,7 +180,7 @@ def load_northwind(env) -> None:
 
     fabric_workspace_name = urllib.parse.quote("Analytical Data Storage System")
     fabric_lakehouse_name = "data_according_to_system"
-    fabric_directory = "Tables"
+    fabric_directory = "Files" # Ideally Tables, but something is wrong with the API
     bucket_url = f"abfss://{fabric_workspace_name}@onelake.dfs.fabric.microsoft.com/{fabric_lakehouse_name}.Lakehouse/{fabric_directory}"
 
     os.environ["CREDENTIALS__AZURE_TENANT_ID"] = os.getenv("AZURE_TENANT_ID")
