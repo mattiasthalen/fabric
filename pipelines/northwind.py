@@ -183,12 +183,6 @@ def load_northwind(env) -> None:
     fabric_directory = "Files" # Ideally Tables, but something is wrong with the API
     bucket_url = f"abfss://{fabric_workspace_name}@onelake.dfs.fabric.microsoft.com/{fabric_lakehouse_name}.Lakehouse/{fabric_directory}"
 
-    os.environ["CREDENTIALS__AZURE_TENANT_ID"] = os.getenv("AZURE_TENANT_ID")
-    os.environ["CREDENTIALS__AZURE_CLIENT_ID"] = os.getenv("AZURE_CLIENT_ID")
-    os.environ["CREDENTIALS__AZURE_CLIENT_SECRET"] = os.getenv("AZURE_CLIENT_SECRET")
-    os.environ["CREDENTIALS__AZURE_STORAGE_ACCOUNT_NAME"] = "onelake"
-    os.environ["CREDENTIALS__AZURE_ACCOUNT_HOST"] = "onelake.blob.fabric.microsoft.com"
-
     pipeline = dlt.pipeline(
         pipeline_name="northwind",
         destination=dlt.destinations.filesystem(bucket_url=bucket_url),
@@ -206,4 +200,11 @@ def load_northwind(env) -> None:
 
 if __name__ == "__main__":
     env = sys.argv[1] if len(sys.argv) > 1 else "dev"
+    
+    os.environ["CREDENTIALS__AZURE_TENANT_ID"] = os.getenv("AZURE_TENANT_ID")
+    os.environ["CREDENTIALS__AZURE_CLIENT_ID"] = os.getenv("AZURE_CLIENT_ID")
+    os.environ["CREDENTIALS__AZURE_CLIENT_SECRET"] = os.getenv("AZURE_CLIENT_SECRET")
+    os.environ["CREDENTIALS__AZURE_STORAGE_ACCOUNT_NAME"] = "onelake"
+    os.environ["CREDENTIALS__AZURE_ACCOUNT_HOST"] = "onelake.blob.fabric.microsoft.com"
+
     load_northwind(env=env)
