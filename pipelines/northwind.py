@@ -178,10 +178,10 @@ def load_northwind(env) -> None:
     dev_mode = env != "prod"
     print(f"Running in {'dev' if dev_mode else 'prod'} mode")
 
-    fabric_workspace_name = urllib.parse.quote("Analytical Data Storage System")
-    fabric_lakehouse_name = "data_according_to_system"
-    fabric_directory = "Files" # Ideally Tables, but something is wrong with the API
-    bucket_url = f"abfss://{fabric_workspace_name}@onelake.dfs.fabric.microsoft.com/{fabric_lakehouse_name}.Lakehouse/{fabric_directory}"
+    workspace_id = os.getenv("FABRIC__WORKSPACE_ID")
+    lakehouse_id = os.getenv("FABRIC__LAKEHOUSE_ID")
+
+    bucket_url = f"abfss://{workspace_id}@onelake.dfs.fabric.microsoft.com/{lakehouse_id}/Files"
 
     pipeline = dlt.pipeline(
         pipeline_name="northwind",
