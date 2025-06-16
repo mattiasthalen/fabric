@@ -8,4 +8,5 @@ dependencies = [
     "deltalake<1.0",
     "dlt[az,deltalake,filesystem,parquet]>=1.11.0",
     "enlighten>=1.14.1",
+    "sqlmesh[mssql-odbc]>=0.192.2",
 ]
