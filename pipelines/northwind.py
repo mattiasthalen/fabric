@@ -1,9 +1,11 @@
 import dlt
+import os
+import sys
 import typing as t
+import urllib
 
 from dlt.sources.rest_api.typing import RESTAPIConfig
 from dlt.sources.rest_api import rest_api_resources
-from dlt.destinations import filesystem
 
 @dlt.source(name="northwind")
 def northwind_source() -> t.Any:
@@ -166,22 +168,35 @@ def northwind_source() -> t.Any:
                     "paginator": "auto",
                 },
             }
+            
         ],
     }
 
     yield from rest_api_resources(source_config)
 
-def load_northwind() -> None:
+def load_northwind(env) -> None:
+    dev_mode = env != "prod"
+    print(f"Running in {'dev' if dev_mode else 'prod'} mode")
+
+    fabric_workspace_name = urllib.parse.quote("Analytical Data Storage System")
+    fabric_lakehouse_name = "data_according_to_system"
+    fabric_directory = "Tables"
+    bucket_url = f"abfss://{fabric_workspace_name}@onelake.dfs.fabric.microsoft.com/{fabric_lakehouse_name}.Lakehouse/{fabric_directory}"
+
+    os.environ["CREDENTIALS__AZURE_TENANT_ID"] = os.getenv("AZURE_TENANT_ID")
+    os.environ["CREDENTIALS__AZURE_CLIENT_ID"] = os.getenv("AZURE_CLIENT_ID")
+    os.environ["CREDENTIALS__AZURE_CLIENT_SECRET"] = os.getenv("AZURE_CLIENT_SECRET")
+    os.environ["CREDENTIALS__AZURE_STORAGE_ACCOUNT_NAME"] = "onelake"
+    os.environ["CREDENTIALS__AZURE_ACCOUNT_HOST"] = "onelake.blob.fabric.microsoft.com"
+
     pipeline = dlt.pipeline(
         pipeline_name="northwind",
-        destination=filesystem(
-                            bucket_url="./lakehouse/default/Files/northwind",
-                        ),
-        dataset_name="bronze",
+        destination=dlt.destinations.filesystem(bucket_url=bucket_url),
+        dataset_name="northwind",
         progress="enlighten",
         export_schema_path="./pipelines/schemas/export",
         import_schema_path="./pipelines/schemas/import",
-        dev_mode=False
+        dev_mode=dev_mode
     )
 
     source = northwind_source()
@@ -190,4 +205,5 @@ def load_northwind() -> None:
     print(load_info)
 
 if __name__ == "__main__":
-    load_northwind()
+    env = sys.argv[1] if len(sys.argv) > 1 else "dev"
+    load_northwind(env=env)

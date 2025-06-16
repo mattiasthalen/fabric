@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "deltalake==0.25.5",
-    "dlt[deltalake,filesystem,parquet]>=1.11.0",
+    "deltalake<1.0",
+    "dlt[az,deltalake,filesystem,parquet]>=1.11.0",
     "enlighten>=1.14.1",
 ]
