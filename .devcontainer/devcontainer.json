@@ -1,4 +1,5 @@
 {
+	"name": "fabric",
 	"image": "mcr.microsoft.com/devcontainers/universal:2",
 	"features": {
 		"ghcr.io/jlaundry/devcontainer-features/mssql-odbc-driver:1": {},
