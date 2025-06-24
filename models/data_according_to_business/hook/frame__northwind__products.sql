@@ -27,6 +27,7 @@ WITH cte__source AS (
     CONCAT('northwind.product.id|', product_id::TEXT) AS _hook__product__id,
     CONCAT('northwind.supplier.id|', supplier_id::TEXT) AS _hook__supplier__id,
     CONCAT('northwind.category.id|', category_id::TEXT) AS _hook__category__id,
+    CONCAT('northwind.category_detail.id|', category_id::TEXT) AS _hook__category_detail__id,
     *
   FROM cte__record_windows
 ), cte__pit_hooks AS (
@@ -40,6 +41,7 @@ SELECT
   _hook__product__id,
   _hook__supplier__id,
   _hook__category__id,
+  _hook__category_detail__id,
   product_id,
   product_name,
   supplier_id,
