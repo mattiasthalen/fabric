@@ -50,7 +50,8 @@ config = Config(
                 driver="pyodbc",
                 driver_name="ODBC Driver 18 for SQL Server",
                 odbc_properties={
-                    "Authentication": "ActiveDirectoryServicePrincipal"
+                    "Authentication": "ActiveDirectoryServicePrincipal",
+                    "Command Timeout": 120
                 }
             ),
             state_connection=MSSQLConnectionConfig(
@@ -61,7 +62,8 @@ config = Config(
                 driver="pyodbc",
                 driver_name="ODBC Driver 18 for SQL Server",
                 odbc_properties={
-                    "Authentication": "ActiveDirectoryServicePrincipal"
+                    "Authentication": "ActiveDirectoryServicePrincipal",
+                    "Command Timeout": 120
                 }
                 
             )
