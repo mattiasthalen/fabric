@@ -19,18 +19,18 @@ WITH cte__source AS (
   @record_windows(cte__source, category_id, record_loaded_at, @min_ts, @max_ts)
 ), cte__hooks AS (
   SELECT
-    CONCAT('northwind.category.id|', category_id::TEXT) AS _hook__category__id,
+    CONCAT('northwind.category_detail.id|', category_id::TEXT) AS _hook__category_detail__id,
     *
   FROM cte__record_windows
 ), cte__pit_hooks AS (
   SELECT
-    CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__category__id) AS _pit_hook__category__id,
+    CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__category_detail__id) AS _pit_hook__category_detail__id,
     *
   FROM cte__hooks
 )
 SELECT
-  _pit_hook__category__id,
-  _hook__category__id,
+  _pit_hook__category_detail__id,
+  _hook__category_detail__id,
   category_id,
   category_name,
   description,
