@@ -6,7 +6,7 @@ MODEL (
 
 WITH cte__source AS (
   SELECT
-    customer_id,
+    supplier_id,
     company_name,
     contact_name,
     contact_title,
@@ -15,12 +15,13 @@ WITH cte__source AS (
     postal_code,
     country,
     phone,
-    fax,
     region,
+    home_page,
+    fax,
     _dlt_load_id,
     _dlt_id,
     @to_timestamp(_dlt_load_id::DOUBLE) AS record_loaded_at
-  FROM data_according_to_system.northwind.raw__northwind__customers
+  FROM data_according_to_system.northwind.raw__northwind__suppliers
 )
 SELECT
   *

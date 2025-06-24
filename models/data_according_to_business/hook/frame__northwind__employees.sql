@@ -6,21 +6,28 @@ MODEL (
 
 WITH cte__source AS (
   SELECT
-    customer_id,
-    company_name,
-    contact_name,
-    contact_title,
+    employee_id,
+    last_name,
+    first_name,
+    title,
+    title_of_courtesy,
+    birth_date,
+    hire_date,
     address,
     city,
+    region,
     postal_code,
     country,
-    phone,
-    fax,
-    region,
+    home_phone,
+    extension,
+    photo,
+    notes,
+    reports_to,
+    photo_path,
     _dlt_load_id,
     _dlt_id,
     @to_timestamp(_dlt_load_id::DOUBLE) AS record_loaded_at
-  FROM data_according_to_system.northwind.raw__northwind__customers
+  FROM data_according_to_system.northwind.raw__northwind__employees
 )
 SELECT
   *
