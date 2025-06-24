@@ -18,6 +18,7 @@ WITH cte__source AS (
 ), cte__hooks AS (
   SELECT
     CONCAT('northwind.territory.id|', territory_id::TEXT) AS _hook__territory__id,
+    CONCAT('northwind.region.id|', region_id::TEXT) AS _hook__region__id,
     *
   FROM cte__record_windows
 ), cte__pit_hooks AS (
@@ -29,6 +30,7 @@ WITH cte__source AS (
 SELECT
   _pit_hook__territory__id,
   _hook__territory__id,
+  _hook__region__id,
   territory_id,
   territory_description,
   region_id,

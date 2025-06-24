@@ -33,6 +33,7 @@ WITH cte__source AS (
 ), cte__hooks AS (
   SELECT
     CONCAT('northwind.employee.id|', employee_id::TEXT) AS _hook__employee__id,
+    CONCAT('northwind.region.id|', region::TEXT) AS _hook__region__id,
     *
   FROM cte__record_windows
 ), cte__pit_hooks AS (
@@ -44,6 +45,7 @@ WITH cte__source AS (
 SELECT
   _pit_hook__employee__id,
   _hook__employee__id,
+  _hook__region__id,
   employee_id,
   last_name,
   first_name,

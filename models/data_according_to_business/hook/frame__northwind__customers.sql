@@ -26,6 +26,7 @@ WITH cte__source AS (
 ), cte__hooks AS (
   SELECT
     CONCAT('northwind.customer.id|', customer_id::TEXT) AS _hook__customer__id,
+    CONCAT('northwind.region.id|', region::TEXT) AS _hook__region__id,
     *
   FROM cte__record_windows
 ), cte__pit_hooks AS (
@@ -37,6 +38,7 @@ WITH cte__source AS (
 SELECT
   _pit_hook__customer__id,
   _hook__customer__id,
+  _hook__region__id,
   customer_id,
   company_name,
   contact_name,

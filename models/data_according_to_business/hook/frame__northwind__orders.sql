@@ -29,6 +29,8 @@ WITH cte__source AS (
 ), cte__hooks AS (
   SELECT
     CONCAT('northwind.order.id|', order_id::TEXT) AS _hook__order__id,
+    CONCAT('northwind.customer.id|', customer_id::TEXT) AS _hook__customer__id,
+    CONCAT('northwind.employee.id|', employee_id::TEXT) AS _hook__employee__id,
     *
   FROM cte__record_windows
 ), cte__pit_hooks AS (
@@ -40,6 +42,8 @@ WITH cte__source AS (
 SELECT
   _pit_hook__order__id,
   _hook__order__id,
+  _hook__customer__id,
+  _hook__employee__id,
   order_id,
   customer_id,
   employee_id,
