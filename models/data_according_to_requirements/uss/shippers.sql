@@ -5,6 +5,7 @@ MODEL (
 );
 
 SELECT
+  _pit_hook__shipper__id,
   shipper_id AS shipper__shipper_id,
   company_name AS shipper__company_name,
   phone AS shipper__phone,

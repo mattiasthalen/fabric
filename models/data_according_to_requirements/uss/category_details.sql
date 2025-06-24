@@ -5,6 +5,7 @@ MODEL (
 );
 
 SELECT
+  _pit_hook__category_detail__id,
   category_id AS category_detail__category_id,
   category_name AS category_detail__category_name,
   description AS category_detail__description,

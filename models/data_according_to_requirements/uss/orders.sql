@@ -5,6 +5,7 @@ MODEL (
 );
 
 SELECT
+  _pit_hook__order__id,
   order_id AS order__order_id,
   customer_id AS order__customer_id,
   employee_id AS order__employee_id,

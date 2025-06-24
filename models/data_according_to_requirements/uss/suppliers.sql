@@ -5,6 +5,7 @@ MODEL (
 );
 
 SELECT
+  _pit_hook__supplier__id,
   supplier_id AS supplier__supplier_id,
   company_name AS supplier__company_name,
   contact_name AS supplier__contact_name,

@@ -5,6 +5,7 @@ MODEL (
 );
 
 SELECT
+  _pit_hook__territory__id,
   territory_id AS territory__territory_id,
   territory_description AS territory__territory_description,
   region_id AS territory__region_id,
