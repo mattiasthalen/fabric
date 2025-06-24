@@ -14,6 +14,6 @@
 		}
 	},
 	"mounts": [
-		"source=${env:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+		"source=${env:HOME}/.ssh,target=/home/codespace/.ssh,type=bind,consistency=cached"
 	]
 }
