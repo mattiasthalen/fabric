@@ -21,18 +21,26 @@ WITH cte__source AS (
   @record_windows(cte__source, order_id__product_id, record_loaded_at, @min_ts, @max_ts)
 ), cte__hooks AS (
   SELECT
-    CONCAT('northwind.order_detail.id|', order_id__product_id::TEXT) AS _hook__order_detail__id,
+    CONCAT('northwind.order.id|', order_id::TEXT) AS _hook__order__id,
+    CONCAT('northwind.product.id|', order_id::TEXT) AS _hook__product__id,
     *
   FROM cte__record_windows
-), cte__pit_hooks AS (
+), cte__composite_hooks AS (
   SELECT
-    CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__order_detail__id) AS _pit_hook__order_detail__id,
+    CONCAT(_hook__order__id, '~', _hook__product__id) AS _hook__order__product,
     *
   FROM cte__hooks
+), cte__pit_hooks AS (
+  SELECT
+    CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__order__product) AS _pit_hook__order__product,
+    *
+  FROM cte__composite_hooks
 )
 SELECT
-  _pit_hook__order_detail__id,
-  _hook__order_detail__id,
+  _pit_hook__order__product,
+  _hook__order__product,
+  _hook__order__id,
+  _hook__product__id,
   order_id__product_id,
   order_id,
   product_id,

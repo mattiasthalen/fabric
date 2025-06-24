@@ -19,18 +19,26 @@ WITH cte__source AS (
   @record_windows(cte__source, employee_id__territory_id, record_loaded_at, @min_ts, @max_ts)
 ), cte__hooks AS (
   SELECT
-    CONCAT('northwind.employee_territory.id|', employee_id__territory_id::TEXT) AS _hook__employee_territory__id,
+    CONCAT('northwind.employee.id|', employee_id::TEXT) AS _hook__employee__id,
+    CONCAT('northwind.territory.id|', territory_id::TEXT) AS _hook__territory__id,
     *
   FROM cte__record_windows
-), cte__pit_hooks AS (
+), cte__composite_hooks AS (
   SELECT
-    CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__employee_territory__id) AS _pit_hook__employee_territory__id,
+    CONCAT(_hook__employee__id, '~', _hook__territory__id) AS _hook__employee__territory,
     *
   FROM cte__hooks
+), cte__pit_hooks AS (
+  SELECT
+    CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__employee__territory) AS _pit_hook__employee__territory,
+    *
+  FROM cte__composite_hooks
 )
 SELECT
-  _pit_hook__employee_territory__id,
-  _hook__employee_territory__id,
+  _pit_hook__employee__territory,
+  _hook__employee__territory,
+  _hook__employee__id,
+  _hook__territory__id,
   employee_id__territory_id,
   employee_id,
   territory_id,
