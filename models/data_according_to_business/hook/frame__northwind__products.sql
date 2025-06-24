@@ -22,8 +22,24 @@ WITH cte__source AS (
   FROM data_according_to_system.northwind.raw__northwind__products
 ), cte__record_windows AS (
   @record_windows(cte__source, product_id, record_loaded_at, @min_ts, @max_ts)
+), cte__hooks AS (
+  SELECT
+    CONCAT('northwind.product.id|', product_id::TEXT) AS _hook__product__id,
+    CONCAT('northwind.supplier.id|', supplier_id::TEXT) AS _hook__supplier__id,
+    CONCAT('northwind.category.id|', category_id::TEXT) AS _hook__category__id,
+    *
+  FROM cte__record_windows
+), cte__pit_hooks AS (
+  SELECT
+    CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__product__id) AS _pit_hook__product__id,
+    *
+  FROM cte__hooks
 )
 SELECT
+  _pit_hook__product__id,
+  _hook__product__id,
+  _hook__supplier__id,
+  _hook__category__id,
   product_id,
   product_name,
   supplier_id,
@@ -42,6 +58,6 @@ SELECT
   record_valid_from,
   record_valid_to,
   is_current_record
-FROM cte__record_windows
+FROM cte__pit_hooks
 WHERE
   1 = 1 AND record_updated_at BETWEEN @start_ts AND @end_ts

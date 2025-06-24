@@ -5,6 +5,7 @@ MODEL (
 );
 
 SELECT
+  _pit_hook__employee__id,
   employee_id AS employee__employee_id,
   last_name AS employee__last_name,
   first_name AS employee__first_name,

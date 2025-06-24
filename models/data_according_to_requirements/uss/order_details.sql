@@ -5,6 +5,7 @@ MODEL (
 );
 
 SELECT
+  _pit_hook__order__product,
   order_id__product_id AS order_detail__order_id__product_id,
   order_id AS order_detail__order_id,
   product_id AS order_detail__product_id,

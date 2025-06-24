@@ -5,6 +5,7 @@ MODEL (
 );
 
 SELECT
+  _pit_hook__region__id,
   region_id AS region__region_id,
   region_description AS region__region_description,
   _dlt_load_id AS region__dlt_load_id,

@@ -5,6 +5,7 @@ MODEL (
 );
 
 SELECT
+  _pit_hook__customer__id,
   customer_id AS customer__customer_id,
   company_name AS customer__company_name,
   contact_name AS customer__contact_name,
