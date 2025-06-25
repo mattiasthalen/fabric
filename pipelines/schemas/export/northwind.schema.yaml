@@ -1,5 +1,5 @@
 version: 3
-version_hash: +/Ky/H9Xo65b1gnX3TAhA7E6oBxygPjhHI1TmQghEwU=
+version_hash: 1q0cY745HWTlnhSuLJC6uds3fqfZSIf+F5KCK06Wbrg=
 engine_version: 11
 name: northwind
 tables:
@@ -88,9 +88,9 @@ tables:
         unique: true
         row_key: true
       region:
-        data_type: text
         nullable: true
-    write_disposition: replace
+        data_type: text
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_customers
     x-normalizer:
@@ -137,7 +137,7 @@ tables:
         nullable: false
         unique: true
         row_key: true
-    write_disposition: replace
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_products
     x-normalizer:
@@ -160,7 +160,7 @@ tables:
         nullable: false
         unique: true
         row_key: true
-    write_disposition: replace
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_regions
     x-normalizer:
@@ -186,7 +186,7 @@ tables:
         nullable: false
         unique: true
         row_key: true
-    write_disposition: replace
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_shippers
     x-normalizer:
@@ -231,15 +231,15 @@ tables:
         unique: true
         row_key: true
       region:
-        data_type: text
         nullable: true
+        data_type: text
       home_page:
-        data_type: text
         nullable: true
+        data_type: text
       fax:
-        data_type: text
         nullable: true
-    write_disposition: replace
+        data_type: text
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_suppliers
     x-normalizer:
@@ -265,7 +265,7 @@ tables:
         nullable: false
         unique: true
         row_key: true
-    write_disposition: replace
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_territories
     x-normalizer:
@@ -296,7 +296,7 @@ tables:
         nullable: false
         unique: true
         row_key: true
-    write_disposition: replace
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_categoriesid_details
     x-normalizer:
@@ -325,7 +325,7 @@ tables:
         nullable: false
         unique: true
         row_key: true
-    write_disposition: replace
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_employeesid_territories
     x-normalizer:
@@ -360,7 +360,7 @@ tables:
         data_type: double
         nullable: true
         variant: true
-    write_disposition: replace
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_ordersid_order_details
     x-normalizer:
@@ -417,9 +417,9 @@ tables:
         unique: true
         row_key: true
       ship_region:
-        data_type: text
         nullable: true
-    write_disposition: replace
+        data_type: text
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_orders
     x-normalizer:
@@ -490,7 +490,7 @@ tables:
         nullable: false
         unique: true
         row_key: true
-    write_disposition: replace
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_employees
     x-normalizer:
@@ -516,7 +516,7 @@ tables:
         nullable: false
         unique: true
         row_key: true
-    write_disposition: replace
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_categories
     x-normalizer:
@@ -578,6 +578,6 @@ normalizers:
   json:
     module: dlt.common.normalizers.json.relational
 previous_hashes:
-- RJHaub7Atmo2ttaRv7K6/wwPfvfbyhoFl+oZK38m8mg=
+- I5+xCaGrOKnLXaxu+J0YnbYqc9PeB2AcZTWY7MMO02Q=
 - tfsuxXaFpatpRlcgP58YTiEBhwWr6A7qerzrojKsPgg=
 - i+SLqTCSr3ay2xd7JWwmNGt8gTvFF9B7PQ7lhJNyxkg=
