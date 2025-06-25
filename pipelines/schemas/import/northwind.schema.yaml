@@ -1,5 +1,5 @@
-version: 1
-version_hash: tfsuxXaFpatpRlcgP58YTiEBhwWr6A7qerzrojKsPgg=
+version: 7
+version_hash: 7LwP30AI8+V8C3gUs+nDUePi/+v4NNQ36yNQ5qxUhP8=
 engine_version: 11
 name: northwind
 tables:
@@ -51,7 +51,46 @@ tables:
       customer_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: text
+      company_name:
+        data_type: text
+        nullable: true
+      contact_name:
+        data_type: text
+        nullable: true
+      contact_title:
+        data_type: text
+        nullable: true
+      address:
+        data_type: text
+        nullable: true
+      city:
+        data_type: text
+        nullable: true
+      postal_code:
+        data_type: text
+        nullable: true
+      country:
+        data_type: text
+        nullable: true
+      phone:
+        data_type: text
+        nullable: true
+      fax:
+        data_type: text
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+      region:
+        nullable: true
+        data_type: text
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_customers
   raw__northwind__products:
@@ -59,7 +98,43 @@ tables:
       product_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: bigint
+      product_name:
+        data_type: text
+        nullable: true
+      supplier_id:
+        data_type: bigint
+        nullable: true
+      category_id:
+        data_type: bigint
+        nullable: true
+      quantity_per_unit:
+        data_type: text
+        nullable: true
+      unit_price:
+        data_type: double
+        nullable: true
+      units_in_stock:
+        data_type: bigint
+        nullable: true
+      units_on_order:
+        data_type: bigint
+        nullable: true
+      reorder_level:
+        data_type: bigint
+        nullable: true
+      discontinued:
+        data_type: bool
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_products
   raw__northwind__regions:
@@ -67,7 +142,19 @@ tables:
       region_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: bigint
+      region_description:
+        data_type: text
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_regions
   raw__northwind__shippers:
@@ -75,7 +162,22 @@ tables:
       shipper_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: bigint
+      company_name:
+        data_type: text
+        nullable: true
+      phone:
+        data_type: text
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_shippers
   raw__northwind__suppliers:
@@ -83,7 +185,49 @@ tables:
       supplier_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: bigint
+      company_name:
+        data_type: text
+        nullable: true
+      contact_name:
+        data_type: text
+        nullable: true
+      contact_title:
+        data_type: text
+        nullable: true
+      address:
+        data_type: text
+        nullable: true
+      city:
+        data_type: text
+        nullable: true
+      postal_code:
+        data_type: text
+        nullable: true
+      country:
+        data_type: text
+        nullable: true
+      phone:
+        data_type: text
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+      region:
+        nullable: true
+        data_type: text
+      home_page:
+        nullable: true
+        data_type: text
+      fax:
+        nullable: true
+        data_type: text
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_suppliers
   raw__northwind__territories:
@@ -91,12 +235,50 @@ tables:
       territory_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: text
+      territory_description:
+        data_type: text
+        nullable: true
+      region_id:
+        data_type: bigint
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_territories
   raw__northwind__category_details:
-    columns: {}
-    write_disposition: replace
+    columns:
+      category_id:
+        data_type: bigint
+        nullable: true
+      category_name:
+        data_type: text
+        nullable: true
+      description:
+        data_type: text
+        nullable: true
+      picture:
+        data_type: text
+        nullable: true
+      product_names:
+        data_type: json
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_categoriesid_details
   raw__northwind__employee_territories:
@@ -104,12 +286,57 @@ tables:
       territory_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: text
+      territory_description:
+        data_type: text
+        nullable: true
+      region_id:
+        data_type: bigint
+        nullable: true
+      _get_northwindapiv_1_employees_employee_id:
+        data_type: bigint
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+    write_disposition: append
     table_format: delta
-    resource: get_northwindapiv_1_employeesid_territories
+    resource: get_northwindapiv_1_employee_territories
   raw__northwind__order_details:
-    columns: {}
-    write_disposition: replace
+    columns:
+      order_id:
+        data_type: bigint
+        nullable: true
+      product_id:
+        data_type: bigint
+        nullable: true
+      unit_price:
+        data_type: double
+        nullable: true
+      quantity:
+        data_type: bigint
+        nullable: true
+      discount:
+        data_type: bigint
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+      discount__v_double:
+        data_type: double
+        nullable: true
+        variant: true
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_ordersid_order_details
   raw__northwind__orders:
@@ -117,7 +344,55 @@ tables:
       order_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: bigint
+      customer_id:
+        data_type: text
+        nullable: true
+      employee_id:
+        data_type: bigint
+        nullable: true
+      order_date:
+        data_type: timestamp
+        nullable: true
+      required_date:
+        data_type: timestamp
+        nullable: true
+      shipped_date:
+        data_type: timestamp
+        nullable: true
+      ship_via:
+        data_type: bigint
+        nullable: true
+      freight:
+        data_type: double
+        nullable: true
+      ship_name:
+        data_type: text
+        nullable: true
+      ship_address:
+        data_type: text
+        nullable: true
+      ship_city:
+        data_type: text
+        nullable: true
+      ship_postal_code:
+        data_type: text
+        nullable: true
+      ship_country:
+        data_type: text
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+      ship_region:
+        nullable: true
+        data_type: text
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_orders
   raw__northwind__employees:
@@ -125,7 +400,67 @@ tables:
       employee_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: bigint
+      last_name:
+        data_type: text
+        nullable: true
+      first_name:
+        data_type: text
+        nullable: true
+      title:
+        data_type: text
+        nullable: true
+      title_of_courtesy:
+        data_type: text
+        nullable: true
+      birth_date:
+        data_type: timestamp
+        nullable: true
+      hire_date:
+        data_type: timestamp
+        nullable: true
+      address:
+        data_type: text
+        nullable: true
+      city:
+        data_type: text
+        nullable: true
+      region:
+        data_type: text
+        nullable: true
+      postal_code:
+        data_type: text
+        nullable: true
+      country:
+        data_type: text
+        nullable: true
+      home_phone:
+        data_type: text
+        nullable: true
+      extension:
+        data_type: text
+        nullable: true
+      photo:
+        data_type: text
+        nullable: true
+      notes:
+        data_type: text
+        nullable: true
+      reports_to:
+        data_type: bigint
+        nullable: true
+      photo_path:
+        data_type: text
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_employees
   raw__northwind__categories:
@@ -133,7 +468,22 @@ tables:
       category_id:
         nullable: false
         primary_key: true
-    write_disposition: replace
+        data_type: bigint
+      category_name:
+        data_type: text
+        nullable: true
+      description:
+        data_type: text
+        nullable: true
+      _dlt_load_id:
+        data_type: text
+        nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
+    write_disposition: append
     table_format: delta
     resource: get_northwindapiv_1_categories
   _dlt_pipeline_state:
@@ -159,6 +509,11 @@ tables:
       _dlt_load_id:
         data_type: text
         nullable: false
+      _dlt_id:
+        data_type: text
+        nullable: false
+        unique: true
+        row_key: true
     write_disposition: append
     file_format: preferred
     resource: _dlt_pipeline_state
@@ -185,4 +540,10 @@ normalizers:
   json:
     module: dlt.common.normalizers.json.relational
 previous_hashes:
+- MgwGd37VYmz18xeiTKKbGGewqrAEuOl2j7XeFRUkyGk=
+- 1q0cY745HWTlnhSuLJC6uds3fqfZSIf+F5KCK06Wbrg=
+- jurZLFPAH6vE0+EddEGeqqRG/030HU9ox49SRmc/h7Q=
+- +/Ky/H9Xo65b1gnX3TAhA7E6oBxygPjhHI1TmQghEwU=
+- RJHaub7Atmo2ttaRv7K6/wwPfvfbyhoFl+oZK38m8mg=
+- tfsuxXaFpatpRlcgP58YTiEBhwWr6A7qerzrojKsPgg=
 - i+SLqTCSr3ay2xd7JWwmNGt8gTvFF9B7PQ7lhJNyxkg=

@@ -1,5 +1,5 @@
-version: 5
-version_hash: 1q0cY745HWTlnhSuLJC6uds3fqfZSIf+F5KCK06Wbrg=
+version: 8
+version_hash: MDKnnnKy3ZzxIT8QyYkuttRw4OnCMFIJYdtQS2baHXU=
 engine_version: 11
 name: northwind
 tables:
@@ -94,7 +94,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_customers
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__products:
     columns:
@@ -141,7 +140,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_products
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__regions:
     columns:
@@ -164,7 +162,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_regions
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__shippers:
     columns:
@@ -190,7 +187,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_shippers
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__suppliers:
     columns:
@@ -243,7 +239,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_suppliers
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__territories:
     columns:
@@ -269,7 +264,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_territories
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__category_details:
     columns:
@@ -300,7 +294,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_categoriesid_details
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__employee_territories:
     columns:
@@ -327,9 +320,8 @@ tables:
         row_key: true
     write_disposition: append
     table_format: delta
-    resource: get_northwindapiv_1_employeesid_territories
+    resource: get_northwindapiv_1_employee_territories
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__order_details:
     columns:
@@ -364,7 +356,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_ordersid_order_details
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__orders:
     columns:
@@ -423,7 +414,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_orders
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__employees:
     columns:
@@ -494,7 +484,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_employees
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   raw__northwind__categories:
     columns:
@@ -520,7 +509,6 @@ tables:
     table_format: delta
     resource: get_northwindapiv_1_categories
     x-normalizer:
-      max_nesting: 0
       seen-data: true
   _dlt_pipeline_state:
     columns:
@@ -578,6 +566,10 @@ normalizers:
   json:
     module: dlt.common.normalizers.json.relational
 previous_hashes:
+- 7LwP30AI8+V8C3gUs+nDUePi/+v4NNQ36yNQ5qxUhP8=
+- TaCRJJg63o2raGCLdoaovHtYsEHh0dtV3/TLVIbifHE=
+- MgwGd37VYmz18xeiTKKbGGewqrAEuOl2j7XeFRUkyGk=
+- 1q0cY745HWTlnhSuLJC6uds3fqfZSIf+F5KCK06Wbrg=
 - jurZLFPAH6vE0+EddEGeqqRG/030HU9ox49SRmc/h7Q=
 - +/Ky/H9Xo65b1gnX3TAhA7E6oBxygPjhHI1TmQghEwU=
 - RJHaub7Atmo2ttaRv7K6/wwPfvfbyhoFl+oZK38m8mg=

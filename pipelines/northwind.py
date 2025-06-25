@@ -67,7 +67,7 @@ def northwind_source() -> t.Any:
             },
 
             {
-                "name": "get_northwindapiv_1_employeesid_territories",
+                "name": "get_northwindapiv_1_employee_territories",
                 "table_name": "raw__northwind__employee_territories",
                 "endpoint": {
                     "data_selector": "$",
