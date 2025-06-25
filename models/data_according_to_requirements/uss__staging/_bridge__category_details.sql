@@ -4,11 +4,24 @@ MODEL (
   )
 );
 
+WITH cte__bridge AS (
+  SELECT
+    'category_details' AS peripheral,
+    _pit_hook__category__id AS _pit_hook__category_detail__id,
+    record_updated_at,
+    record_valid_from,
+    record_valid_to,
+    is_current_record
+  FROM data_according_to_business.hook.frame__northwind__category_details
+)
+
 SELECT
-  'northwind__category_details' AS peripheral,
-  _pit_hook__category__id AS _pit_hook__category_detail__id,
+  peripheral,
+  _pit_hook__category_detail__id,
   record_updated_at,
   record_valid_from,
   record_valid_to,
   is_current_record
-FROM data_according_to_business.hook.frame__northwind__category_details
+FROM cte__bridge
+WHERE
+  1 = 1 AND record_updated_at BETWEEN @start_ts AND @end_ts

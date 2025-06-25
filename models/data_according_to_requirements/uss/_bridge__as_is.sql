@@ -1,6 +1,5 @@
 MODEL (
-  kind VIEW,
-  enabled FALSE
+  kind VIEW
 );
 
 SELECT

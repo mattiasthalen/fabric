@@ -24,10 +24,10 @@ SELECT
   region_id,
   _dlt_load_id,
   _dlt_id,
-  record_loaded_at::TIMESTAMP,
-  record_updated_at::TIMESTAMP,
-  record_version::INT,
-  record_valid_from::TIMESTAMP,
-  record_valid_to::TIMESTAMP,
-  is_current_record::INT
+  record_loaded_at,
+  record_updated_at,
+  record_version,
+  record_valid_from,
+  record_valid_to,
+  is_current_record
 FROM cte__record_windows
