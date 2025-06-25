@@ -4,35 +4,13 @@ MODEL (
   )
 );
 
-WITH cte__source AS (
-  SELECT
-    order_id,
-    customer_id,
-    employee_id,
-    order_date,
-    required_date,
-    shipped_date,
-    ship_via,
-    freight,
-    ship_name,
-    ship_address,
-    ship_city,
-    ship_postal_code,
-    ship_country,
-    ship_region,
-    _dlt_load_id,
-    _dlt_id,
-    @to_timestamp(_dlt_load_id::DOUBLE) AS record_loaded_at
-  FROM data_according_to_system.northwind.raw__northwind__orders
-), cte__record_windows AS (
-  @record_windows(cte__source, order_id, record_loaded_at, @min_ts, @max_ts)
-), cte__hooks AS (
+WITH cte__hooks AS (
   SELECT
     CONCAT('northwind.order.id|', order_id::TEXT) AS _hook__order__id,
     CONCAT('northwind.customer.id|', customer_id::TEXT) AS _hook__customer__id,
     CONCAT('northwind.employee.id|', employee_id::TEXT) AS _hook__employee__id,
     *
-  FROM cte__record_windows
+  FROM data_according_to_system.cdc.cdc__northwind__orders
 ), cte__pit_hooks AS (
   SELECT
     CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__order__id) AS _pit_hook__order__id,

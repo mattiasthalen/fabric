@@ -13,5 +13,5 @@ dependencies = [
 
 [tool.uv]
 override-dependencies = [
-    "sqlglot @ git+https://github.com/tobymao/sqlglot.git",
+    "sqlglot @ git+https://github.com/mattiasthalen/sqlglot.git@fix/fabric-data-types",
 ]

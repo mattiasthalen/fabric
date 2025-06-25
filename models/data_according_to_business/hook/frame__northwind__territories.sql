@@ -4,23 +4,12 @@ MODEL (
   )
 );
 
-WITH cte__source AS (
-  SELECT
-    territory_id,
-    territory_description,
-    region_id,
-    _dlt_load_id,
-    _dlt_id,
-    @to_timestamp(_dlt_load_id::DOUBLE) AS record_loaded_at
-  FROM data_according_to_system.northwind.raw__northwind__territories
-), cte__record_windows AS (
-  @record_windows(cte__source, territory_id, record_loaded_at, @min_ts, @max_ts)
-), cte__hooks AS (
+WITH cte__hooks AS (
   SELECT
     CONCAT('northwind.territory.id|', territory_id::TEXT) AS _hook__territory__id,
     CONCAT('northwind.region.id|', region_id::TEXT) AS _hook__region__id,
     *
-  FROM cte__record_windows
+  FROM data_according_to_system.cdc.cdc__northwind__territories
 ), cte__pit_hooks AS (
   SELECT
     CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__territory__id) AS _pit_hook__territory__id,
