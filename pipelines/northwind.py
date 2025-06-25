@@ -11,20 +11,19 @@ from dlt.sources.rest_api import rest_api_resources
 def northwind_source() -> t.Any:
     source_config: RESTAPIConfig = {
         "client": {
-            "base_url": "https://demodata.grapecity.com",
+            "base_url": "https://demodata.grapecity.com/northwind/api/v1/",
         },
         "resource_defaults": {
-            "write_disposition": "replace",
+            "write_disposition": "append",
             "max_table_nesting": 0
         },
         "resources": [
             {
                 "name": "get_northwindapiv_1_categories",
                 "table_name": "raw__northwind__categories",
-                "primary_key": "categoryId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Categories",
+                    "path": "Categories",
                     "paginator": "auto",
                 },
             },
@@ -34,7 +33,7 @@ def northwind_source() -> t.Any:
                 "table_name": "raw__northwind__category_details",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Categories/{id}/Details",
+                    "path": "Categories/{id}/Details",
                     "params": {
                         "id": {
                             "type": "resolve",
@@ -49,10 +48,9 @@ def northwind_source() -> t.Any:
             {
                 "name": "get_northwindapiv_1_customers",
                 "table_name": "raw__northwind__customers",
-                "primary_key": "customerId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Customers",
+                    "path": "Customers",
                     "paginator": "auto",
                 },
             },
@@ -60,10 +58,9 @@ def northwind_source() -> t.Any:
             {
                 "name": "get_northwindapiv_1_employees",
                 "table_name": "raw__northwind__employees",
-                "primary_key": "employeeId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Employees",
+                    "path": "Employees",
                     "paginator": "auto",
                 },
             },
@@ -71,10 +68,9 @@ def northwind_source() -> t.Any:
             {
                 "name": "get_northwindapiv_1_employeesid_territories",
                 "table_name": "raw__northwind__employee_territories",
-                "primary_key": "territoryId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Employees/{id}/Territories",
+                    "path": "Employees/{id}/Territories",
                     "params": {
                         "id": {
                             "type": "resolve",
@@ -92,7 +88,7 @@ def northwind_source() -> t.Any:
                 "table_name": "raw__northwind__order_details",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Orders/{id}/OrderDetails",
+                    "path": "Orders/{id}/OrderDetails",
                     "params": {
                         "id": {
                             "type": "resolve",
@@ -106,10 +102,9 @@ def northwind_source() -> t.Any:
             {
                 "name": "get_northwindapiv_1_orders",
                 "table_name": "raw__northwind__orders",
-                "primary_key": "orderId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Orders",
+                    "path": "Orders",
                     "paginator": "auto",
                 },
             },
@@ -117,10 +112,9 @@ def northwind_source() -> t.Any:
             {
                 "name": "get_northwindapiv_1_products",
                 "table_name": "raw__northwind__products",
-                "primary_key": "productId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Products",
+                    "path": "Products",
                     "paginator": "auto",
                 },
             },
@@ -128,10 +122,9 @@ def northwind_source() -> t.Any:
             {
                 "name": "get_northwindapiv_1_regions",
                 "table_name": "raw__northwind__regions",
-                "primary_key": "regionId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Regions",
+                    "path": "Regions",
                     "paginator": "auto",
                 },
             },
@@ -139,10 +132,9 @@ def northwind_source() -> t.Any:
             {
                 "name": "get_northwindapiv_1_shippers",
                 "table_name": "raw__northwind__shippers",
-                "primary_key": "shipperId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Shippers",
+                    "path": "Shippers",
                     "paginator": "auto",
                 },
             },
@@ -150,10 +142,9 @@ def northwind_source() -> t.Any:
             {
                 "name": "get_northwindapiv_1_suppliers",
                 "table_name": "raw__northwind__suppliers",
-                "primary_key": "supplierId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Suppliers",
+                    "path": "Suppliers",
                     "paginator": "auto",
                 },
             },
@@ -161,10 +152,9 @@ def northwind_source() -> t.Any:
             {
                 "name": "get_northwindapiv_1_territories",
                 "table_name": "raw__northwind__territories",
-                "primary_key": "territoryId",
                 "endpoint": {
                     "data_selector": "$",
-                    "path": "/northwind/api/v1/Territories",
+                    "path": "Territories",
                     "paginator": "auto",
                 },
             }
@@ -181,7 +171,7 @@ def load_northwind(env) -> None:
     workspace_id = os.getenv("FABRIC__WORKSPACE_ID")
     lakehouse_id = os.getenv("FABRIC__LAKEHOUSE_ID")
 
-    bucket_url = f"abfss://{workspace_id}@onelake.dfs.fabric.microsoft.com/{lakehouse_id}/Files"
+    bucket_url = f"abfss://{workspace_id}@onelake.dfs.fabric.microsoft.com/{lakehouse_id}/Tables"
 
     pipeline = dlt.pipeline(
         pipeline_name="northwind",
