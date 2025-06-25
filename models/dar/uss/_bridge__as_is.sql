@@ -1,4 +1,5 @@
 MODEL (
+  enabled FALSE,
   kind VIEW
 );
 

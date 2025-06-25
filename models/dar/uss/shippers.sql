@@ -1,4 +1,5 @@
 MODEL (
+  enabled FALSE,
   kind INCREMENTAL_BY_TIME_RANGE (
     time_column (shipper__record_updated_at, '%%Y-%%m-%%d %%H:%%M:%%S.%%f')
   )
