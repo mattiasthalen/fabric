@@ -1,5 +1,6 @@
 import dlt
 import os
+import subprocess
 import sys
 import typing as t
 import urllib
@@ -24,7 +25,7 @@ def northwind_source() -> t.Any:
                 "endpoint": {
                     "data_selector": "$",
                     "path": "Categories",
-                    "paginator": "auto",
+                    "paginator": "single_page",
                 },
             },
             
@@ -51,7 +52,7 @@ def northwind_source() -> t.Any:
                 "endpoint": {
                     "data_selector": "$",
                     "path": "Customers",
-                    "paginator": "auto",
+                    "paginator": "single_page",
                 },
             },
             
@@ -61,7 +62,7 @@ def northwind_source() -> t.Any:
                 "endpoint": {
                     "data_selector": "$",
                     "path": "Employees",
-                    "paginator": "auto",
+                    "paginator": "single_page",
                 },
             },
 
@@ -105,7 +106,7 @@ def northwind_source() -> t.Any:
                 "endpoint": {
                     "data_selector": "$",
                     "path": "Orders",
-                    "paginator": "auto",
+                    "paginator": "single_page",
                 },
             },
             
@@ -115,7 +116,7 @@ def northwind_source() -> t.Any:
                 "endpoint": {
                     "data_selector": "$",
                     "path": "Products",
-                    "paginator": "auto",
+                    "paginator": "single_page",
                 },
             },
             
@@ -125,7 +126,7 @@ def northwind_source() -> t.Any:
                 "endpoint": {
                     "data_selector": "$",
                     "path": "Regions",
-                    "paginator": "auto",
+                    "paginator": "single_page",
                 },
             },
            
@@ -135,7 +136,7 @@ def northwind_source() -> t.Any:
                 "endpoint": {
                     "data_selector": "$",
                     "path": "Shippers",
-                    "paginator": "auto",
+                    "paginator": "single_page",
                 },
             },
            
@@ -145,7 +146,7 @@ def northwind_source() -> t.Any:
                 "endpoint": {
                     "data_selector": "$",
                     "path": "Suppliers",
-                    "paginator": "auto",
+                    "paginator": "single_page",
                 },
             },
             
@@ -155,7 +156,7 @@ def northwind_source() -> t.Any:
                 "endpoint": {
                     "data_selector": "$",
                     "path": "Territories",
-                    "paginator": "auto",
+                    "paginator": "single_page",
                 },
             }
             
@@ -168,6 +169,12 @@ def load_northwind(env) -> None:
     dev_mode = env != "prod"
     print(f"Running in {'dev' if dev_mode else 'prod'} mode")
 
+    dataset_name = "northwind"
+
+    if dev_mode:
+        branch_name = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip().decode('utf-8')
+        dataset_name = f"dev__{dataset_name}__{branch_name.replace('-', '_')}"
+
     workspace_id = os.getenv("FABRIC__WORKSPACE_ID")
     lakehouse_id = os.getenv("FABRIC__LAKEHOUSE_ID")
 
@@ -176,7 +183,7 @@ def load_northwind(env) -> None:
     pipeline = dlt.pipeline(
         pipeline_name="northwind",
         destination=dlt.destinations.filesystem(bucket_url=bucket_url),
-        dataset_name="northwind",
+        dataset_name=dataset_name,
         progress="enlighten",
         export_schema_path="./pipelines/schemas/export",
         import_schema_path="./pipelines/schemas/import",

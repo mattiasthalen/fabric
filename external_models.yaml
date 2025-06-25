@@ -1,4 +1,4 @@
-- name: '"das"."northwind"."raw__northwind__categories"'
+- name: '"landing_zone"."northwind"."raw__northwind__categories"'
   columns:
     category_id: BIGINT
     category_name: TEXT(8000)
@@ -6,7 +6,7 @@
     _dlt_load_id: TEXT(8000)
     _dlt_id: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__category_details"'
+- name: '"landing_zone"."northwind"."raw__northwind__category_details"'
   columns:
     category_id: BIGINT
     category_name: TEXT(8000)
@@ -16,7 +16,7 @@
     _dlt_load_id: TEXT(8000)
     _dlt_id: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__customers"'
+- name: '"landing_zone"."northwind"."raw__northwind__customers"'
   columns:
     customer_id: TEXT(8000)
     company_name: TEXT(8000)
@@ -32,7 +32,7 @@
     _dlt_id: TEXT(8000)
     region: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__employee_territories"'
+- name: '"landing_zone"."northwind"."raw__northwind__employee_territories"'
   columns:
     territory_id: TEXT(8000)
     territory_description: TEXT(8000)
@@ -41,7 +41,7 @@
     _dlt_load_id: TEXT(8000)
     _dlt_id: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__employees"'
+- name: '"landing_zone"."northwind"."raw__northwind__employees"'
   columns:
     employee_id: BIGINT
     last_name: TEXT(8000)
@@ -64,7 +64,7 @@
     _dlt_load_id: TEXT(8000)
     _dlt_id: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__order_details"'
+- name: '"landing_zone"."northwind"."raw__northwind__order_details"'
   columns:
     order_id: BIGINT
     product_id: BIGINT
@@ -75,7 +75,7 @@
     _dlt_id: TEXT(8000)
     discount__v_double: REAL(53)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__orders"'
+- name: '"landing_zone"."northwind"."raw__northwind__orders"'
   columns:
     order_id: BIGINT
     customer_id: TEXT(8000)
@@ -94,7 +94,7 @@
     _dlt_id: TEXT(8000)
     ship_region: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__products"'
+- name: '"landing_zone"."northwind"."raw__northwind__products"'
   columns:
     product_id: BIGINT
     product_name: TEXT(8000)
@@ -109,14 +109,14 @@
     _dlt_load_id: TEXT(8000)
     _dlt_id: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__regions"'
+- name: '"landing_zone"."northwind"."raw__northwind__regions"'
   columns:
     region_id: BIGINT
     region_description: TEXT(8000)
     _dlt_load_id: TEXT(8000)
     _dlt_id: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__shippers"'
+- name: '"landing_zone"."northwind"."raw__northwind__shippers"'
   columns:
     shipper_id: BIGINT
     company_name: TEXT(8000)
@@ -124,7 +124,7 @@
     _dlt_load_id: TEXT(8000)
     _dlt_id: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__suppliers"'
+- name: '"landing_zone"."northwind"."raw__northwind__suppliers"'
   columns:
     supplier_id: BIGINT
     company_name: TEXT(8000)
@@ -141,7 +141,7 @@
     home_page: TEXT(8000)
     fax: TEXT(8000)
   gateway: fabric
-- name: '"das"."northwind"."raw__northwind__territories"'
+- name: '"landing_zone"."northwind"."raw__northwind__territories"'
   columns:
     territory_id: TEXT(8000)
     territory_description: TEXT(8000)
