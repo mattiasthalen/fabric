@@ -44,7 +44,7 @@ config = Config(
         "fabric": GatewayConfig(
             connection=FabricConnectionConfig(
                 host=fabric__warehouse_endpoint,
-                database="data_according_to_business",
+                database="dab",
                 user=azure_client_id,
                 password=azure_client_secret,
                 driver="pyodbc",
