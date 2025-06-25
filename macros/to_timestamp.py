@@ -31,9 +31,17 @@ def to_timestamp(evaluator, seconds_since_epoch: exp.Expression) -> exp.Expressi
     )
 
     # Create DATEADD expression
-    return exp.func(
+    date_add = exp.func(
         "DATEADD",
         exp.Identifier(this="MICROSECOND"),
         microseconds,
         epoch_start,
     )
+
+    # Cast the result to TIMESTAMP
+    cast = exp.Cast(
+        this=date_add,
+        to=exp.DataType(this=exp.DataType.Type.TIMESTAMP)
+    )
+
+    return cast

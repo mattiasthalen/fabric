@@ -36,12 +36,12 @@ SELECT
   region_id,
   _dlt_load_id,
   _dlt_id,
-  record_loaded_at,
-  record_updated_at,
-  record_version,
-  record_valid_from,
-  record_valid_to,
-  is_current_record
+  record_loaded_at::TIMESTAMP,
+  record_updated_at::TIMESTAMP,
+  record_version::INT,
+  record_valid_from::TIMESTAMP,
+  record_valid_to::TIMESTAMP,
+  is_current_record::INT
 FROM cte__pit_hooks
 WHERE
   1 = 1 AND record_updated_at BETWEEN @start_ts AND @end_ts
