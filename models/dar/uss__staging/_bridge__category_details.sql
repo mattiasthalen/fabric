@@ -6,7 +6,7 @@ MODEL (
 WITH cte__bridge AS (
   SELECT
     'category_details' AS peripheral,
-    _pit_hook__category__id AS _pit_hook__category_detail__id,
+    _pit_hook__category_detail__id,
     _record__updated_at,
     _record__valid_from,
     _record__valid_to,
