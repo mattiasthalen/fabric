@@ -1,8 +1,6 @@
 MODEL (
-  enabled FALSE,
-  kind INCREMENTAL_BY_TIME_RANGE (
-    time_column (order__record_updated_at, '%%Y-%%m-%%d %%H:%%M:%%S.%%f')
-  )
+  enabled TRUE,
+  kind VIEW
 );
 
 SELECT
@@ -23,12 +21,10 @@ SELECT
   ship_region AS order__ship_region,
   _dlt_load_id AS order__dlt_load_id,
   _dlt_id AS order__dlt_id,
-  _record__loaded_at AS order___record__loaded_at,
-  record_updated_at AS order__record_updated_at,
-  record_version AS order__record_version,
-  _record__valid_from AS order___record__valid_from,
-  _record__valid_to AS order___record__valid_to,
-  is_current_record AS order__is_current_record
+  _record__loaded_at AS order__record__loaded_at,
+  _record__updated_at AS order__record__updated_at,
+  _record__version AS order__record__version,
+  _record__valid_from AS order__record__valid_from,
+  _record__valid_to AS order__record__valid_to,
+  _record__is_current AS order__record__is_current
 FROM dab.hook.frame__northwind__orders
-WHERE
-  1 = 1 AND order__record_updated_at BETWEEN @start_ts AND @end_ts

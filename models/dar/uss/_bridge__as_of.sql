@@ -1,8 +1,6 @@
 MODEL (
-  enabled FALSE,
-  kind INCREMENTAL_BY_TIME_RANGE (
-    time_column (record_updated_at, '%%Y-%%m-%%d %%H:%%M:%%S.%%f')
-  )
+  enabled TRUE,
+  kind VIEW
 );
 
 WITH cte__union AS (
@@ -11,10 +9,10 @@ WITH cte__union AS (
     NULL AS _pit_hook__product__id,
     _pit_hook__category__id,
     NULL AS _pit_hook__category_detail__id,
-    record_updated_at,
+    _record__updated_at,
     _record__valid_from,
     _record__valid_to,
-    is_current_record
+    _record__is_current
   FROM dar.uss__staging._bridge__categories
   UNION ALL
   SELECT
@@ -22,10 +20,10 @@ WITH cte__union AS (
     NULL AS _pit_hook__product__id,
     NULL AS _pit_hook__category__id,
     _pit_hook__category_detail__id,
-    record_updated_at,
+    _record__updated_at,
     _record__valid_from,
     _record__valid_to,
-    is_current_record
+    _record__is_current
   FROM dar.uss__staging._bridge__category_details
   UNION ALL
   SELECT
@@ -33,10 +31,10 @@ WITH cte__union AS (
     _pit_hook__product__id,
     _pit_hook__category__id,
     _pit_hook__category_detail__id,
-    record_updated_at,
+    _record__updated_at,
     _record__valid_from,
     _record__valid_to,
-    is_current_record
+    _record__is_current
   FROM dar.uss__staging._bridge__products
 )
 
@@ -45,8 +43,8 @@ SELECT
   _pit_hook__category__id,
   _pit_hook__category_detail__id,
   _pit_hook__product__id,
-  record_updated_at,
+  _record__updated_at,
   _record__valid_from,
   _record__valid_to,
-  is_current_record
+  _record__is_current
 FROM cte__union
