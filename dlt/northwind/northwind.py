@@ -180,13 +180,17 @@ def load_northwind(env) -> None:
 
     bucket_url = f"abfss://{workspace_id}@onelake.dfs.fabric.microsoft.com/{lakehouse_id}/Tables"
 
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    export_schema_path = os.path.join(script_dir, "schemas", "export")
+    import_schema_path = os.path.join(script_dir, "schemas", "import")
+
     pipeline = dlt.pipeline(
         pipeline_name="northwind",
         destination=dlt.destinations.filesystem(bucket_url=bucket_url),
         dataset_name=dataset_name,
         progress="enlighten",
-        export_schema_path="./pipelines/schemas/export",
-        import_schema_path="./pipelines/schemas/import",
+        export_schema_path=export_schema_path,
+        import_schema_path=import_schema_path,
         dev_mode=dev_mode
     )
 
