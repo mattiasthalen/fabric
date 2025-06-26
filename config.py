@@ -44,26 +44,28 @@ config = Config(
         "fabric": GatewayConfig(
             connection=FabricConnectionConfig(
                 host=fabric__warehouse_endpoint,
-                database="das",
                 user=azure_client_id,
                 password=azure_client_secret,
+                database="das",
+                timeout=120,
+                login_timeout=120,
                 driver="pyodbc",
                 driver_name="ODBC Driver 18 for SQL Server",
                 odbc_properties={
-                    "Authentication": "ActiveDirectoryServicePrincipal",
-                    "Command Timeout": 120
+                    "Authentication": "ActiveDirectoryServicePrincipal"
                 }
             ),
             state_connection=MSSQLConnectionConfig(
                 host=fabric__sql_db_endpoint,
-                database=fabric__sql_db_name,
                 user=azure_client_id,
                 password=azure_client_secret,
+                database=fabric__sql_db_name,
+                timeout=120,
+                login_timeout=120,
                 driver="pyodbc",
                 driver_name="ODBC Driver 18 for SQL Server",
                 odbc_properties={
-                    "Authentication": "ActiveDirectoryServicePrincipal",
-                    "Command Timeout": 120
+                    "Authentication": "ActiveDirectoryServicePrincipal"
                 }
                 
             )
