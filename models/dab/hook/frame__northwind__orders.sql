@@ -1,8 +1,6 @@
 MODEL (
   enabled TRUE,
-  kind INCREMENTAL_BY_TIME_RANGE (
-    time_column (_record__updated_at, '%Y-%m-%d %H:%M:%S.%f')
-  )
+  kind VIEW
 );
 
 WITH cte__record_validity AS (
@@ -47,5 +45,3 @@ SELECT
   _record__is_current,
   _record__version
 FROM cte__pit_hooks
-WHERE
-  1 = 1 AND _record__updated_at BETWEEN @start_ts AND @end_ts
