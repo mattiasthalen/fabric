@@ -32,11 +32,10 @@ WITH cte__record_validity AS (
 SELECT
   _pit_hook__category__id,
   _hook__category__id,
-  category_id,
-  category_name,
-  description,
-  _dlt_load_id,
-  _dlt_id,
+  @STAR__LIST(
+    table_name := das.scd.scd__northwind__categories,
+    exclude := [_record__loaded_at, _record__valid_from, _record__valid_to],
+  ),
   _record__loaded_at,
   _record__updated_at,
   _record__valid_from,
