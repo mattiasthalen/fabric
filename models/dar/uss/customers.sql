@@ -20,11 +20,11 @@ SELECT
   region AS customer__region,
   _dlt_load_id AS customer__dlt_load_id,
   _dlt_id AS customer__dlt_id,
-  record_loaded_at AS customer__record_loaded_at,
+  _record__loaded_at AS customer___record__loaded_at,
   record_updated_at AS customer__record_updated_at,
   record_version AS customer__record_version,
-  record_valid_from AS customer__record_valid_from,
-  record_valid_to AS customer__record_valid_to,
+  _record__valid_from AS customer___record__valid_from,
+  _record__valid_to AS customer___record__valid_to,
   is_current_record AS customer__is_current_record
 FROM dab.hook.frame__northwind__customers
 WHERE

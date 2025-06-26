@@ -10,10 +10,10 @@ WITH cte__hooks AS (
     CONCAT('northwind.employee.id|', employee_id::TEXT) AS _hook__employee__id,
     CONCAT('northwind.region.id|', region::TEXT) AS _hook__region__id,
     *
-  FROM das.cdc.cdc__northwind__employees
+  FROM das.scd.scd__northwind__employees
 ), cte__pit_hooks AS (
   SELECT
-    CONCAT('epoch.timestamp|', record_valid_from::TEXT, '~', _hook__employee__id) AS _pit_hook__employee__id,
+    CONCAT('epoch.timestamp|', _record__valid_from::TEXT, '~', _hook__employee__id) AS _pit_hook__employee__id,
     *
   FROM cte__hooks
 )
@@ -41,11 +41,11 @@ SELECT
   photo_path,
   _dlt_load_id,
   _dlt_id,
-  record_loaded_at,
+  _record__loaded_at,
   record_updated_at,
   record_version,
-  record_valid_from,
-  record_valid_to,
+  _record__valid_from,
+  _record__valid_to,
   is_current_record
 FROM cte__pit_hooks
 WHERE

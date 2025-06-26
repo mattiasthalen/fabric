@@ -12,11 +12,11 @@ SELECT
   description AS category__description,
   _dlt_load_id AS category__dlt_load_id,
   _dlt_id AS category__dlt_id,
-  record_loaded_at AS category__record_loaded_at,
+  _record__loaded_at AS category___record__loaded_at,
   record_updated_at AS category__record_updated_at,
   record_version AS category__record_version,
-  record_valid_from AS category__record_valid_from,
-  record_valid_to AS category__record_valid_to,
+  _record__valid_from AS category___record__valid_from,
+  _record__valid_to AS category___record__valid_to,
   is_current_record AS category__is_current_record
 FROM dab.hook.frame__northwind__categories
 WHERE

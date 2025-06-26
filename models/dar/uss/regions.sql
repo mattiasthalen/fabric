@@ -11,11 +11,11 @@ SELECT
   region_description AS region__region_description,
   _dlt_load_id AS region__dlt_load_id,
   _dlt_id AS region__dlt_id,
-  record_loaded_at AS region__record_loaded_at,
+  _record__loaded_at AS region___record__loaded_at,
   record_updated_at AS region__record_updated_at,
   record_version AS region__record_version,
-  record_valid_from AS region__record_valid_from,
-  record_valid_to AS region__record_valid_to,
+  _record__valid_from AS region___record__valid_from,
+  _record__valid_to AS region___record__valid_to,
   is_current_record AS region__is_current_record
 FROM dab.hook.frame__northwind__regions
 WHERE

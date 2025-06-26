@@ -12,11 +12,11 @@ SELECT
   phone AS shipper__phone,
   _dlt_load_id AS shipper__dlt_load_id,
   _dlt_id AS shipper__dlt_id,
-  record_loaded_at AS shipper__record_loaded_at,
+  _record__loaded_at AS shipper___record__loaded_at,
   record_updated_at AS shipper__record_updated_at,
   record_version AS shipper__record_version,
-  record_valid_from AS shipper__record_valid_from,
-  record_valid_to AS shipper__record_valid_to,
+  _record__valid_from AS shipper___record__valid_from,
+  _record__valid_to AS shipper___record__valid_to,
   is_current_record AS shipper__is_current_record
 FROM dab.hook.frame__northwind__shippers
 WHERE

@@ -14,11 +14,11 @@ SELECT
   product_names AS category_detail__product_names,
   _dlt_load_id AS category_detail__dlt_load_id,
   _dlt_id AS category_detail__dlt_id,
-  record_loaded_at AS category_detail__record_loaded_at,
+  _record__loaded_at AS category_detail___record__loaded_at,
   record_updated_at AS category_detail__record_updated_at,
   record_version AS category_detail__record_version,
-  record_valid_from AS category_detail__record_valid_from,
-  record_valid_to AS category_detail__record_valid_to,
+  _record__valid_from AS category_detail___record__valid_from,
+  _record__valid_to AS category_detail___record__valid_to,
   is_current_record AS category_detail__is_current_record
 FROM dab.hook.frame__northwind__category_details
 WHERE

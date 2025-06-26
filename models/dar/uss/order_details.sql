@@ -16,11 +16,11 @@ SELECT
   discount__v_double AS order_detail__discount__v_double,
   _dlt_load_id AS order_detail__dlt_load_id,
   _dlt_id AS order_detail__dlt_id,
-  record_loaded_at AS order_detail__record_loaded_at,
+  _record__loaded_at AS order_detail___record__loaded_at,
   record_updated_at AS order_detail__record_updated_at,
   record_version AS order_detail__record_version,
-  record_valid_from AS order_detail__record_valid_from,
-  record_valid_to AS order_detail__record_valid_to,
+  _record__valid_from AS order_detail___record__valid_from,
+  _record__valid_to AS order_detail___record__valid_to,
   is_current_record AS order_detail__is_current_record
 FROM dab.hook.frame__northwind__order_details
 WHERE

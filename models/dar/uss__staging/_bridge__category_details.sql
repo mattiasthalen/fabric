@@ -10,8 +10,8 @@ WITH cte__bridge AS (
     'category_details' AS peripheral,
     _pit_hook__category__id AS _pit_hook__category_detail__id,
     record_updated_at,
-    record_valid_from,
-    record_valid_to,
+    _record__valid_from,
+    _record__valid_to,
     is_current_record
   FROM dab.hook.frame__northwind__category_details
 )
@@ -20,8 +20,8 @@ SELECT
   peripheral,
   _pit_hook__category_detail__id,
   record_updated_at,
-  record_valid_from,
-  record_valid_to,
+  _record__valid_from,
+  _record__valid_to,
   is_current_record
 FROM cte__bridge
 WHERE

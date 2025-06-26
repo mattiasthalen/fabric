@@ -27,11 +27,11 @@ SELECT
   photo_path AS employee__photo_path,
   _dlt_load_id AS employee__dlt_load_id,
   _dlt_id AS employee__dlt_id,
-  record_loaded_at AS employee__record_loaded_at,
+  _record__loaded_at AS employee___record__loaded_at,
   record_updated_at AS employee__record_updated_at,
   record_version AS employee__record_version,
-  record_valid_from AS employee__record_valid_from,
-  record_valid_to AS employee__record_valid_to,
+  _record__valid_from AS employee___record__valid_from,
+  _record__valid_to AS employee___record__valid_to,
   is_current_record AS employee__is_current_record
 FROM dab.hook.frame__northwind__employees
 WHERE

@@ -19,11 +19,11 @@ SELECT
   discontinued AS product__discontinued,
   _dlt_load_id AS product__dlt_load_id,
   _dlt_id AS product__dlt_id,
-  record_loaded_at AS product__record_loaded_at,
+  _record__loaded_at AS product___record__loaded_at,
   record_updated_at AS product__record_updated_at,
   record_version AS product__record_version,
-  record_valid_from AS product__record_valid_from,
-  record_valid_to AS product__record_valid_to,
+  _record__valid_from AS product___record__valid_from,
+  _record__valid_to AS product___record__valid_to,
   is_current_record AS product__is_current_record
 FROM dab.hook.frame__northwind__products
 WHERE

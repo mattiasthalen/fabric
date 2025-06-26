@@ -12,11 +12,11 @@ SELECT
   region_id AS territory__region_id,
   _dlt_load_id AS territory__dlt_load_id,
   _dlt_id AS territory__dlt_id,
-  record_loaded_at AS territory__record_loaded_at,
+  _record__loaded_at AS territory___record__loaded_at,
   record_updated_at AS territory__record_updated_at,
   record_version AS territory__record_version,
-  record_valid_from AS territory__record_valid_from,
-  record_valid_to AS territory__record_valid_to,
+  _record__valid_from AS territory___record__valid_from,
+  _record__valid_to AS territory___record__valid_to,
   is_current_record AS territory__is_current_record
 FROM dab.hook.frame__northwind__territories
 WHERE
