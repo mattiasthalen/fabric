@@ -9,7 +9,8 @@
 		"vscode": {
 			"extensions": [
 				"eamodio.gitlens",
-				"GitHub.copilot"
+				"GitHub.copilot",
+				"tobikodata.sqlmesh"
 			]
 		}
 	},
