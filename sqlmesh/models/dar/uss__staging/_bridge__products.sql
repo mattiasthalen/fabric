@@ -8,7 +8,7 @@ WITH cte__bridge AS (
     'products' AS peripheral,
     frame__northwind__products._pit_hook__product__id,
     frame__northwind__categories._pit_hook__category__id,
-    frame__northwind__category_details._pit_hook__category_detail__id,
+    frame__northwind__category_details._pit_hook__category__id AS _pit_hook__category_detail__id,
     GREATEST(
       frame__northwind__products._record__updated_at,
       frame__northwind__categories._record__updated_at,
@@ -35,7 +35,7 @@ WITH cte__bridge AS (
     AND frame__northwind__products._record__valid_from < frame__northwind__categories._record__valid_to
     AND frame__northwind__products._record__valid_to > frame__northwind__categories._record__valid_from
   LEFT JOIN dab.hook.frame__northwind__category_details
-    ON frame__northwind__products._hook__category_detail__id = frame__northwind__category_details._hook__category_detail__id
+    ON frame__northwind__products._hook__category__id = frame__northwind__category_details._hook__category__id
     AND frame__northwind__products._record__valid_from < frame__northwind__category_details._record__valid_to
     AND frame__northwind__products._record__valid_to > frame__northwind__category_details._record__valid_from
 )
