@@ -32,14 +32,12 @@ WITH cte__bridge AS (
   FROM dab.hook.frame__northwind__products
   LEFT JOIN dab.hook.frame__northwind__categories
     ON frame__northwind__products._hook__category__id = frame__northwind__categories._hook__category__id
+    AND frame__northwind__products._record__valid_from < frame__northwind__categories._record__valid_to
+    AND frame__northwind__products._record__valid_to > frame__northwind__categories._record__valid_from
   LEFT JOIN dab.hook.frame__northwind__category_details
     ON frame__northwind__products._hook__category__id = frame__northwind__category_details._hook__category__id
-  WHERE
-    1 = 1
-    AND frame__northwind__products._record__valid_from >= frame__northwind__categories._record__valid_to
-    AND frame__northwind__products._record__valid_to <= frame__northwind__categories._record__valid_from
-    AND frame__northwind__products._record__valid_from >= frame__northwind__category_details._record__valid_to
-    AND frame__northwind__products._record__valid_to <= frame__northwind__category_details._record__valid_from
+    AND frame__northwind__products._record__valid_from < frame__northwind__category_details._record__valid_to
+    AND frame__northwind__products._record__valid_to > frame__northwind__category_details._record__valid_from
 )
 SELECT
   peripheral,
