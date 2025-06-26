@@ -18,18 +18,18 @@ WITH cte__record_validity AS (
   FROM das.scd.scd__northwind__category_details
 ), cte__hooks AS (
   SELECT
-    CONCAT('northwind.category_detail.id|', category_id::TEXT) AS _hook__category__id,
+    CONCAT('northwind.category_detail.id|', category_id::TEXT) AS _hook__category_detail__id,
     *
   FROM cte__record_validity
 ), cte__pit_hooks AS (
   SELECT
-    CONCAT('epoch.timestamp|', _record__valid_from::TEXT, '~', _hook__category__id) AS _pit_hook__category__id,
+    CONCAT('epoch.timestamp|', _record__valid_from::TEXT, '~', _hook__category_detail__id) AS _pit_hook__category_detail__id,
     *
   FROM cte__hooks
 )
 SELECT
-  _pit_hook__category__id,
-  _hook__category__id,
+  _pit_hook__category_detail__id,
+  _hook__category_detail__id,
   @STAR__LIST(
     table_name := das.scd.scd__northwind__category_details,
     exclude := [_record__loaded_at, _record__valid_from, _record__valid_to]
