@@ -13,7 +13,6 @@ WITH cte__bridge AS (
     _record__is_current
   FROM dab.hook.frame__northwind__category_details
 )
-
 SELECT
   peripheral,
   _pit_hook__category_detail__id,

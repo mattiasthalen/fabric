@@ -38,7 +38,7 @@ SELECT
   _hook__category_detail__id,
   @STAR__LIST(
     table_name := das.scd.scd__northwind__products,
-    exclude := [_record__loaded_at, _record__valid_from, _record__valid_to],
+    exclude := [_record__loaded_at, _record__valid_from, _record__valid_to]
   ),
   _record__loaded_at,
   _record__updated_at,

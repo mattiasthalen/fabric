@@ -14,7 +14,10 @@ WITH cte__record_validity AS (
     _record__valid_from,
     COALESCE(_record__valid_to, @max_ts::TIMESTAMP) AS _record__valid_to,
     CASE WHEN _record__valid_to IS NULL THEN 1 ELSE 0 END AS _record__is_current,
-    ROW_NUMBER() OVER (PARTITION BY _get_northwindapiv_1_employees_employee_id, territory_id ORDER BY _record__valid_from ASC) AS _record__version
+    ROW_NUMBER() OVER (
+      PARTITION BY _get_northwindapiv_1_employees_employee_id, territory_id
+      ORDER BY _record__valid_from ASC
+    ) AS _record__version
   FROM das.scd.scd__northwind__employee_territories
 ), cte__hooks AS (
   SELECT
@@ -40,7 +43,7 @@ SELECT
   _hook__territory__id,
   @STAR__LIST(
     table_name := das.scd.scd__northwind__employee_territories,
-    exclude := [_record__loaded_at, _record__valid_from, _record__valid_to],
+    exclude := [_record__loaded_at, _record__valid_from, _record__valid_to]
   ),
   _record__loaded_at,
   _record__updated_at,

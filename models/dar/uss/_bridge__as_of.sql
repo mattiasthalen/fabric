@@ -37,7 +37,6 @@ WITH cte__union AS (
     _record__is_current
   FROM dar.uss__staging._bridge__products
 )
-
 SELECT
   peripheral,
   _pit_hook__category__id,
