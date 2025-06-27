@@ -9,9 +9,12 @@ MODEL (
     (source := northwind__employees, @unique_key := employee_id),
     (
       source := northwind__employee_territories,
-      @unique_key := _get_northwindapiv_1_employees_employee_id::TEXT||'|'||territory_id::TEXT
+      @unique_key := _get_northwindapiv_1_employees_employee_id::TEXT || '|' || territory_id::TEXT
     ),
-    (source := northwind__order_details, @unique_key := order_id::TEXT||'|'||product_id::TEXT),
+    (
+      source := northwind__order_details,
+      @unique_key := order_id::TEXT || '|' || product_id::TEXT
+    ),
     (source := northwind__orders, @unique_key := order_id),
     (source := northwind__products, @unique_key := product_id),
     (source := northwind__regions, @unique_key := region_id),

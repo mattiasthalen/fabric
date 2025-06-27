@@ -5,18 +5,42 @@ MODEL (
     unique_key _record__hash
   ),
   blueprints (
-    (source := northwind__categories),
-    (source := northwind__category_details),
-    (source := northwind__customers),
-    (source := northwind__employees),
-    (source := northwind__employee_territories),
-    (source := northwind__order_details),
-    (source := northwind__orders),
-    (source := northwind__products),
-    (source := northwind__regions),
-    (source := northwind__shippers),
-    (source := northwind__suppliers),
-    (source := northwind__territories)
+    (
+      source := northwind__categories
+    ),
+    (
+      source := northwind__category_details
+    ),
+    (
+      source := northwind__customers
+    ),
+    (
+      source := northwind__employees
+    ),
+    (
+      source := northwind__employee_territories
+    ),
+    (
+      source := northwind__order_details
+    ),
+    (
+      source := northwind__orders
+    ),
+    (
+      source := northwind__products
+    ),
+    (
+      source := northwind__regions
+    ),
+    (
+      source := northwind__shippers
+    ),
+    (
+      source := northwind__suppliers
+    ),
+    (
+      source := northwind__territories
+    )
   )
 );
 
