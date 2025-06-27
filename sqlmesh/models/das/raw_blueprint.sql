@@ -45,7 +45,7 @@ MODEL (
 );
 
 SELECT
-  @STAR__LIST(table_name := landing_zone.northwind.raw__@source),
+  *,
   @GENERATE_SURROGATE_KEY(
     @STAR__LIST(
       table_name := landing_zone.northwind.raw__@source,

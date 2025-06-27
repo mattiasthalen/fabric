@@ -27,5 +27,5 @@ MODEL (
 );
 
 SELECT
-  @STAR(relation := das.raw.raw__@source)
+  *
 FROM das.raw.raw__@source
