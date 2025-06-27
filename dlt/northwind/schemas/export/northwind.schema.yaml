@@ -1,4 +1,4 @@
-version: 14
+version: 9
 version_hash: +7biH94aYbbIYQUop6gaajcoH5OcXw2UIEHqT7gUITo=
 engine_version: 11
 name: northwind
@@ -578,13 +578,12 @@ normalizers:
   json:
     module: dlt.common.normalizers.json.relational
 previous_hashes:
-- +7biH94aYbbIYQUop6gaajcoH5OcXw2UIEHqT7gUITo=
-- BcN+bszBOPw6ebfLcyFYDjzDNr2sK+kjJApj5KQoCV0=
-- MDKnnnKy3ZzxIT8QyYkuttRw4OnCMFIJYdtQS2baHXU=
-- 7LwP30AI8+V8C3gUs+nDUePi/+v4NNQ36yNQ5qxUhP8=
 - TaCRJJg63o2raGCLdoaovHtYsEHh0dtV3/TLVIbifHE=
+- 7LwP30AI8+V8C3gUs+nDUePi/+v4NNQ36yNQ5qxUhP8=
 - MgwGd37VYmz18xeiTKKbGGewqrAEuOl2j7XeFRUkyGk=
 - 1q0cY745HWTlnhSuLJC6uds3fqfZSIf+F5KCK06Wbrg=
 - jurZLFPAH6vE0+EddEGeqqRG/030HU9ox49SRmc/h7Q=
 - +/Ky/H9Xo65b1gnX3TAhA7E6oBxygPjhHI1TmQghEwU=
 - RJHaub7Atmo2ttaRv7K6/wwPfvfbyhoFl+oZK38m8mg=
+- tfsuxXaFpatpRlcgP58YTiEBhwWr6A7qerzrojKsPgg=
+- i+SLqTCSr3ay2xd7JWwmNGt8gTvFF9B7PQ7lhJNyxkg=

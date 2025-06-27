@@ -16,8 +16,8 @@ from sqlmesh.core.config import (
 from sqlmesh.core.user import User, UserRole
 from sqlmesh.integrations.github.cicd.config import GithubCICDBotConfig, MergeMethod
 
-azure_client_id = os.getenv("AZURE_CLIENT_ID", "Missing")
-azure_client_secret = os.getenv("AZURE_CLIENT_SECRET", "Missing")
+azure_client_id = os.getenv("CREDENTIALS__AZURE_CLIENT_ID", "Missing")
+azure_client_secret = os.getenv("CREDENTIALS__AZURE_CLIENT_SECRET", "Missing")
 
 fabric__warehouse_endpoint = os.getenv("FABRIC__WAREHOUSE_ENDPOINT", "Missing")
 fabric__sql_db_endpoint = os.getenv("FABRIC__SQL_DB_ENDPOINT", "Missing")
