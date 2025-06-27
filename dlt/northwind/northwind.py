@@ -1,168 +1,16 @@
 import dlt
+import json
 import os
 import subprocess
 import sys
 import typing as t
-import urllib
 
 from dlt.sources.rest_api.typing import RESTAPIConfig
 from dlt.sources.rest_api import rest_api_resources
 
 @dlt.source(name="northwind")
 def northwind_source() -> t.Any:
-    source_config: RESTAPIConfig = {
-        "client": {
-            "base_url": "https://demodata.grapecity.com/northwind/api/v1/",
-        },
-        "resource_defaults": {
-            "write_disposition": "append",
-            "max_table_nesting": 0
-        },
-        "resources": [
-            {
-                "name": "get_northwindapiv_1_categories",
-                "table_name": "raw__northwind__categories",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Categories",
-                    "paginator": "single_page",
-                },
-            },
-            
-            {
-                "name": "get_northwindapiv_1_categoriesid_details",
-                "table_name": "raw__northwind__category_details",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Categories/{id}/Details",
-                    "params": {
-                        "id": {
-                            "type": "resolve",
-                            "resource": "get_northwindapiv_1_categories",
-                            "field": "categoryId",
-                        },
-                    },
-                    "paginator": "single_page",
-                },
-            },
-            
-            {
-                "name": "get_northwindapiv_1_customers",
-                "table_name": "raw__northwind__customers",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Customers",
-                    "paginator": "single_page",
-                },
-            },
-            
-            {
-                "name": "get_northwindapiv_1_employees",
-                "table_name": "raw__northwind__employees",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Employees",
-                    "paginator": "single_page",
-                },
-            },
-
-            {
-                "name": "get_northwindapiv_1_employee_territories",
-                "table_name": "raw__northwind__employee_territories",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Employees/{id}/Territories",
-                    "params": {
-                        "id": {
-                            "type": "resolve",
-                            "resource": "get_northwindapiv_1_employees",
-                            "field": "employeeId",
-                        },
-                    },
-                    "paginator": "single_page",
-                },
-                "include_from_parent": ["employeeId"]
-            },
-            
-            {
-                "name": "get_northwindapiv_1_ordersid_order_details",
-                "table_name": "raw__northwind__order_details",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Orders/{id}/OrderDetails",
-                    "params": {
-                        "id": {
-                            "type": "resolve",
-                            "resource": "get_northwindapiv_1_orders",
-                            "field": "orderId",
-                        },
-                    },
-                    "paginator": "single_page",
-                },
-            },
-            {
-                "name": "get_northwindapiv_1_orders",
-                "table_name": "raw__northwind__orders",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Orders",
-                    "paginator": "single_page",
-                },
-            },
-            
-            {
-                "name": "get_northwindapiv_1_products",
-                "table_name": "raw__northwind__products",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Products",
-                    "paginator": "single_page",
-                },
-            },
-            
-            {
-                "name": "get_northwindapiv_1_regions",
-                "table_name": "raw__northwind__regions",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Regions",
-                    "paginator": "single_page",
-                },
-            },
-           
-            {
-                "name": "get_northwindapiv_1_shippers",
-                "table_name": "raw__northwind__shippers",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Shippers",
-                    "paginator": "single_page",
-                },
-            },
-           
-            {
-                "name": "get_northwindapiv_1_suppliers",
-                "table_name": "raw__northwind__suppliers",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Suppliers",
-                    "paginator": "single_page",
-                },
-            },
-            
-            {
-                "name": "get_northwindapiv_1_territories",
-                "table_name": "raw__northwind__territories",
-                "endpoint": {
-                    "data_selector": "$",
-                    "path": "Territories",
-                    "paginator": "single_page",
-                },
-            }
-            
-        ],
-    }
-
+    source_config: RESTAPIConfig = json.load(open("./dlt/northwind/northwind.json", "r"))
     yield from rest_api_resources(source_config)
 
 def load_northwind(env) -> None:
@@ -175,18 +23,13 @@ def load_northwind(env) -> None:
         branch_name = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip().decode('utf-8')
         dataset_name = f"dev_{dataset_name}_{branch_name.replace('-', '_')}"
 
-    #workspace_id = os.getenv("FABRIC__WORKSPACE_ID", "Missing")
-    #lakehouse_id = os.getenv("FABRIC__LAKEHOUSE_ID", "Missing")
-
-    #bucket_url = f"abfss://{workspace_id}@onelake.dfs.fabric.microsoft.com/{lakehouse_id}/Tables"
-
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    export_schema_path = os.path.join(script_dir, "schemas", "export")
-    import_schema_path = os.path.join(script_dir, "schemas", "import")
+    schema_path = "./dlt/northwind"
+    export_schema_path = os.path.join(schema_path, "schemas", "export")
+    import_schema_path = os.path.join(schema_path, "schemas", "import")
 
     pipeline = dlt.pipeline(
         pipeline_name="northwind",
-        destination=dlt.destinations.filesystem(),#bucket_url=bucket_url),
+        destination=dlt.destinations.filesystem(),
         dataset_name=dataset_name,
         progress="enlighten",
         export_schema_path=export_schema_path,
@@ -201,11 +44,4 @@ def load_northwind(env) -> None:
 
 if __name__ == "__main__":
     env = sys.argv[1] if len(sys.argv) > 1 else "dev"
-    
-    os.environ["CREDENTIALS__AZURE_TENANT_ID"] = os.getenv("AZURE_TENANT_ID", "Missing")
-    os.environ["CREDENTIALS__AZURE_CLIENT_ID"] = os.getenv("AZURE_CLIENT_ID", "Missing")
-    os.environ["CREDENTIALS__AZURE_CLIENT_SECRET"] = os.getenv("AZURE_CLIENT_SECRET", "Missing")
-    os.environ["CREDENTIALS__AZURE_STORAGE_ACCOUNT_NAME"] = "onelake"
-    os.environ["CREDENTIALS__AZURE_ACCOUNT_HOST"] = "onelake.blob.fabric.microsoft.com"
-
     load_northwind(env=env)
