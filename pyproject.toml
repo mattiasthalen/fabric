@@ -7,5 +7,5 @@ requires-python = "~=3.11"
 dependencies = [
     "dlt[az,deltalake,filesystem,parquet]>=1.12.1",
     "enlighten>=1.14.1",
-    "sqlmesh[mssql-odbc, lsp] @ git+https://github.com/fresioAS/sqlmesh.git@add_fabric_warehouse",
+    "sqlmesh[mssql-odbc, lsp, web] @ git+https://github.com/fresioAS/sqlmesh.git@add_fabric_warehouse",
 ]
