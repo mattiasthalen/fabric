@@ -1,13 +1,11 @@
 MODEL (
   name das.scd.scd__@source,
   enabled TRUE,
-  kind SCD_TYPE_2_BY_COLUMN (
+  kind SCD_TYPE_2_BY_TIME (
     unique_key @unique_key,
-    columns [_record__hash],
+    updated_at_name _record__loaded_at,
     valid_from_name _record__valid_from,
-    valid_to_name _record__valid_to,
-    invalidate_hard_deletes TRUE,
-    updated_at_name _record__loaded_at
+    valid_to_name _record__valid_to
   ),
   blueprints (
     (source := northwind__categories, @unique_key := category_id),
@@ -29,13 +27,5 @@ MODEL (
 );
 
 SELECT
-  @STAR__LIST(table_name := landing_zone.northwind.raw__@source),
-  @GENERATE_SURROGATE_KEY(
-    @STAR__LIST(
-      table_name := landing_zone.northwind.raw__@source,
-      exclude := [_dlt_load_id, _dlt_id]
-    ),
-    hash_function := 'SHA256'
-  ) AS _record__hash,
-  @TO_TIMESTAMP(_dlt_load_id::DOUBLE) AS _record__loaded_at
-FROM landing_zone.northwind.raw__@source
+  @STAR(relation := das.raw.raw__@source),
+FROM das.raw.raw__@source
