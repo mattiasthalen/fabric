@@ -80,9 +80,7 @@ dateparser==1.2.2
 decorator==5.2.1
     # via ipython
 deltalake==0.25.5
-    # via
-    #   fabric (pyproject.toml)
-    #   dlt
+    # via dlt
 dlt==1.12.3
     # via fabric (pyproject.toml)
 duckdb==1.3.1
@@ -290,7 +288,7 @@ smmap==5.0.2
     # via gitdb
 sniffio==1.3.1
     # via anyio
-sqlglot @ git+https://github.com/tobymao/sqlglot.git@1b0631c2b4516a9ceb81af6173790dd09269b635
+sqlglot==26.31.0
     # via
     #   --override (workspace)
     #   dlt

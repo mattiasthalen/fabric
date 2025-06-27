@@ -3,15 +3,14 @@ name = "fabric"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = "~=3.11"
 dependencies = [
-    "deltalake<1.0",
-    "dlt[az,deltalake,filesystem,parquet]>=1.11.0",
+    "dlt[az,deltalake,filesystem,parquet]>=1.12.1",
     "enlighten>=1.14.1",
     "sqlmesh[mssql-odbc, lsp] @ git+https://github.com/fresioAS/sqlmesh.git@add_fabric_warehouse",
 ]
 
 [tool.uv]
 override-dependencies = [
-    "sqlglot @ git+https://github.com/tobymao/sqlglot.git@v26.31.0",
+    "sqlglot>=26.31.0"
 ]
