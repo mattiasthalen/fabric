@@ -1,6 +1,6 @@
--- Dummy model to render the external_models.yaml
+-- Dummy blueprint to render the external_models.yaml
 MODEL (
-    name das.dummy.dummy__@source,
+    name landing_zone.final.raw__@source,
     kind VIEW,
     enabled FALSE,
     blueprints (

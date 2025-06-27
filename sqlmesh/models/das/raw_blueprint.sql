@@ -5,53 +5,29 @@ MODEL (
     unique_key _record__hash
   ),
   blueprints (
-    (
-      source := northwind__categories
-    ),
-    (
-      source := northwind__category_details
-    ),
-    (
-      source := northwind__customers
-    ),
-    (
-      source := northwind__employees
-    ),
-    (
-      source := northwind__employee_territories
-    ),
-    (
-      source := northwind__order_details
-    ),
-    (
-      source := northwind__orders
-    ),
-    (
-      source := northwind__products
-    ),
-    (
-      source := northwind__regions
-    ),
-    (
-      source := northwind__shippers
-    ),
-    (
-      source := northwind__suppliers
-    ),
-    (
-      source := northwind__territories
-    )
+    (schema := northwind, source := northwind__categories),
+    (schema := northwind, source := northwind__category_details),
+    (schema := northwind, source := northwind__customers),
+    (schema := northwind, source := northwind__employees),
+    (schema := northwind, source := northwind__employee_territories),
+    (schema := northwind, source := northwind__order_details),
+    (schema := northwind, source := northwind__orders),
+    (schema := northwind, source := northwind__products),
+    (schema := northwind, source := northwind__regions),
+    (schema := northwind, source := northwind__shippers),
+    (schema := northwind, source := northwind__suppliers),
+    (schema := northwind, source := northwind__territories)
   )
 );
 
 SELECT
-  *,
+  @STAR(relation := landing_zone.@schema.raw__@source),
   @GENERATE_SURROGATE_KEY(
     @STAR__LIST(
-      table_name := landing_zone.northwind.raw__@source,
+      table_name := landing_zone.@schema.raw__@source,
       exclude := [_dlt_load_id, _dlt_id]
     ),
     hash_function := 'SHA256'
   ) AS _record__hash,
   @TO_TIMESTAMP(_dlt_load_id::DOUBLE) AS _record__loaded_at
-FROM landing_zone.northwind.raw__@source
+FROM landing_zone.@schema.raw__@source

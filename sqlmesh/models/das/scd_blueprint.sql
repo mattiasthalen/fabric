@@ -2,6 +2,7 @@ MODEL (
   name das.scd.scd__@source,
   enabled TRUE,
   kind SCD_TYPE_2_BY_TIME (
+    disable_restatement FALSE,
     unique_key @unique_key,
     updated_at_name _record__loaded_at,
     valid_from_name _record__valid_from,
@@ -27,5 +28,5 @@ MODEL (
 );
 
 SELECT
-  *
+  @STAR(relation := das.raw.raw__@source)
 FROM das.raw.raw__@source
