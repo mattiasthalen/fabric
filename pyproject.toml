@@ -9,8 +9,3 @@ dependencies = [
     "enlighten>=1.14.1",
     "sqlmesh[mssql-odbc, lsp] @ git+https://github.com/fresioAS/sqlmesh.git@add_fabric_warehouse",
 ]
-
-[tool.uv]
-override-dependencies = [
-    "sqlglot>=26.31.0"
-]

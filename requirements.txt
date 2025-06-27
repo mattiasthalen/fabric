@@ -290,10 +290,11 @@ sniffio==1.3.1
     # via anyio
 sqlglot==26.31.0
     # via
-    #   --override (workspace)
     #   dlt
     #   sqlmesh
-sqlmesh @ git+https://github.com/fresioAS/sqlmesh.git@50fe5e4f881ed949bbb0879c767b0c3202ebb168
+sqlglotrs==0.6.1
+    # via sqlglot
+sqlmesh @ git+https://github.com/fresioAS/sqlmesh.git@ae7197bb26c2a0ecbc49c9f8bc26863d41d929d1
     # via fabric (pyproject.toml)
 sse-starlette==2.3.6
     # via sqlmesh
