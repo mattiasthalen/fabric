@@ -5,7 +5,7 @@ MODEL (
 
 WITH cte__hooks AS (
   SELECT
-    CONCAT('northwind.category_detail.id|', category_id::TEXT) AS _hook__category__id,
+    CONCAT('northwind.category.id|', category_id::TEXT) AS _hook__category__id,
     *
   FROM das.scd.scd__northwind__category_details
 ), cte__pit_hooks AS (
