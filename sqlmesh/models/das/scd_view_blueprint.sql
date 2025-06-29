@@ -1,6 +1,6 @@
 MODEL (
   name das.scd.scd_view__@source,
-  enabled TRUE,
+  enabled FALSE,
   kind VIEW,
   blueprints (
     (source := northwind__categories, @unique_key := category_id),
