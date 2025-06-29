@@ -5,6 +5,7 @@ from sqlglot import exp
 
 from sqlmesh.core.model import model
 from sqlmesh.core.macros import MacroEvaluator
+from sqlmesh.core.model.kind import ModelKindName
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 frames_path = os.path.join(script_dir, "frames.yml")
@@ -17,7 +18,10 @@ frames_to_generate = [frame for frame in frames if not frame.get("skip_generatio
 @model(
     "dab.hook.frame__@{name}",
     is_sql=True,
-    kind="VIEW",
+    kind=dict(
+        name=ModelKindName.INCREMENTAL_BY_TIME_RANGE,
+        time_column="_record__updated_at",
+    ),
     blueprints=frames_to_generate,
 )
 def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
@@ -103,6 +107,12 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
             *source_columns
         )
         .from_("cte__primary_hooks")
+        .where(
+            exp.column("_record__updated_at").between(
+                low=evaluator.locals["start_ts"],
+                high=evaluator.locals["end_ts"]
+            )
+        )
         .with_("cte__source", as_=cte__source)
         .with_("cte__hooks", as_=cte__hooks)
         .with_("cte__composite_hooks", as_=cte__composite_hooks)
