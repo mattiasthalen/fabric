@@ -10,7 +10,7 @@ WITH cte__hooks AS (
     CONCAT('northwind.category.id|', category_id::TEXT) AS _hook__category__id,
     CONCAT('northwind.category_detail.id|', category_id::TEXT) AS _hook__category_detail__id,
     *
-  FROM das.scd.scd_view__northwind__products
+  FROM das.scd.scd__northwind__products
 ), cte__pit_hooks AS (
   SELECT
     CONCAT('epoch.timestamp|', _record__valid_from::TEXT, '~', _hook__product__id) AS _pit_hook__product__id,
