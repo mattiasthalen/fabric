@@ -1,5 +1,5 @@
 MODEL (
-  enabled FALSE,
+  enabled TRUE,
   kind VIEW
 );
 
@@ -8,7 +8,7 @@ WITH cte__hooks AS (
     CONCAT('northwind.employee.id|', _get_northwindapiv_1_employees_employee_id::TEXT) AS _hook__employee__id,
     CONCAT('northwind.territory.id|', territory_id::TEXT) AS _hook__territory__id,
     *
-  FROM das.scd.scd_view__northwind__employee_territories
+  FROM das.scd.scd__northwind__employee_territories
 ), cte__composite_hooks AS (
   SELECT
     CONCAT(_hook__employee__id, '~', _hook__territory__id) AS _hook__employee__territory,

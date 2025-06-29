@@ -1,5 +1,5 @@
 MODEL (
-  enabled FALSE,
+  enabled TRUE,
   kind VIEW
 );
 
@@ -8,7 +8,7 @@ WITH cte__hooks AS (
     CONCAT('northwind.order.id|', order_id::TEXT) AS _hook__order__id,
     CONCAT('northwind.product.id|', product_id::TEXT) AS _hook__product__id,
     *
-  FROM das.scd.scd_view__northwind__order_details
+  FROM das.scd.scd__northwind__order_details
 ), cte__composite_hooks AS (
   SELECT
     CONCAT(_hook__order__id, '~', _hook__product__id) AS _hook__order__product,
