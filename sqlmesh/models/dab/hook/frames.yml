@@ -55,7 +55,7 @@
     concept: employee
     qualifier: id
     keyset: northwind.employee.id
-    business_key_field: employee_id
+    business_key_field: _get_northwindapiv_1_employees_employee_id
 
   - name: hook__territory__id
     primary: false
