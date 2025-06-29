@@ -36,20 +36,20 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
         for hook in hooks:
             name = hook.get("name")
             keyset = hook.get("keyset")
-            business_key_field = hook.get("business_key_field")
+            expression = hook.get("expression")
 
             all_hooks.append(name)
 
             if hook.get("primary", False):
                 primary_hook = name
 
-            epxression = exp.func(
+            hook_expression = exp.func(
                 "CONCAT",
                 exp.Literal.string(f"{keyset}|"),
-                exp.cast(exp.column(business_key_field), exp.DataType.build("text"))
+                exp.cast(expression, exp.DataType.build("text"))
             ).as_(name)
 
-            hook_expressions.append(epxression)
+            hook_expressions.append(hook_expression)
 
     composite_hook_expressions = []
     if isinstance(composite_hooks, list):
@@ -62,13 +62,13 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
             if hook.get("primary", False):
                 primary_hook = name
 
-            expression = exp.func(
+            hook_expression = exp.func(
                 "CONCAT_WS",
                 exp.Literal.string("~"),
                 *child_hooks
             ).as_(name)
 
-            composite_hook_expressions.append(expression)
+            composite_hook_expressions.append(hook_expression)
     
     primary_hook_expression = exp.func(
         "CONCAT",
