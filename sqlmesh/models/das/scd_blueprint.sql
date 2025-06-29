@@ -28,11 +28,12 @@ MODEL (
 
 WITH cte__source AS (
   SELECT
-    *
+    *,
+    @unique_key AS _unique_key
   FROM das.raw.raw__@source
 ), cte__changed_ids AS (
   SELECT DISTINCT
-    @unique_key
+    _unique_key
   FROM cte__source
   WHERE
     _record__loaded_at BETWEEN @start_ts AND @end_ts
@@ -40,64 +41,79 @@ WITH cte__source AS (
   SELECT
     *
   FROM cte__source
-  INNER JOIN cte__changed_ids
-    USING (@unique_key)
-), cte__before_window AS (
+  WHERE
+    EXISTS(
+      SELECT
+        1
+      FROM cte__changed_ids
+      WHERE
+        cte__changed_ids._unique_key = cte__source._unique_key
+    )
+), cte__previous_hash AS (
   SELECT
-    *
+    _record__hash
   FROM cte__changed_data
   WHERE
     _record__loaded_at < @start_ts
   QUALIFY
-    ROW_NUMBER() OVER (PARTITION BY @unique_key ORDER BY _record__loaded_at DESC) = 1
-), cte__current_window AS (
+    ROW_NUMBER() OVER (PARTITION BY _unique_key ORDER BY _record__loaded_at DESC) = 1
+), cte__current_hashes AS (
   SELECT
-    *
+    _record__hash
   FROM cte__changed_data
   WHERE
     _record__loaded_at BETWEEN @start_ts AND @end_ts
-), cte__after_windows AS (
+), cte__next_hash AS (
   SELECT
-    *
+    _record__hash
   FROM cte__changed_data
   WHERE
     _record__loaded_at > @end_ts
   QUALIFY
-    ROW_NUMBER() OVER (PARTITION BY @unique_key ORDER BY _record__loaded_at ASC) = 1
-), cte__union AS (
+    ROW_NUMBER() OVER (PARTITION BY _unique_key ORDER BY _record__loaded_at ASC) = 1
+), cte__all_hashes AS (
   SELECT
-    *
-  FROM cte__before_window
+    _record__hash
+  FROM cte__previous_hash
   UNION ALL
   SELECT
-    *
-  FROM cte__current_window
+    _record__hash
+  FROM cte__current_hashes
   UNION ALL
   SELECT
-    *
-  FROM cte__after_windows
-), cte__scd AS (
+    _record__hash
+  FROM cte__next_hash
+), cte__final AS (
   SELECT
     *,
     COALESCE(
-      LEAD(_record__loaded_at) OVER (PARTITION BY @unique_key ORDER BY _record__loaded_at),
+      LEAD(_record__loaded_at) OVER (PARTITION BY _unique_key ORDER BY _record__loaded_at),
       _record__loaded_at
     ) AS _record__updated_at,
     COALESCE(
-     LAG(_record__loaded_at) OVER (PARTITION BY @unique_key ORDER BY _record__loaded_at),
-     '1970-01-01 00:00:00'::TIMESTAMP
+      LAG(_record__loaded_at) OVER (PARTITION BY _unique_key ORDER BY _record__loaded_at),
+      '1970-01-01 00:00:00'::TIMESTAMP
     ) AS _record__valid_from,
     COALESCE(
-     LEAD(_record__loaded_at) OVER (PARTITION BY @unique_key ORDER BY _record__loaded_at),
-     '9999-12-31 23:59:59'::TIMESTAMP
+      LEAD(_record__loaded_at) OVER (PARTITION BY _unique_key ORDER BY _record__loaded_at),
+      '9999-12-31 23:59:59'::TIMESTAMP
     ) AS _record__valid_to,
-    ROW_NUMBER() OVER (PARTITION BY @unique_key ORDER BY _record__loaded_at DESC) AS _record__version,
+    ROW_NUMBER() OVER (PARTITION BY _unique_key ORDER BY _record__loaded_at DESC) AS _record__version,
     CASE
-     WHEN LEAD(_record__loaded_at) OVER (PARTITION BY @unique_key ORDER BY _record__loaded_at) IS NULL
-     THEN 1
-     ELSE 0
+      WHEN LEAD(_record__loaded_at) OVER (PARTITION BY _unique_key ORDER BY _record__loaded_at) IS NULL
+      THEN 1
+      ELSE 0
     END AS _record__is_current
-  FROM cte__union
+  FROM cte__changed_data
+  WHERE
+    1 = 1
+    AND EXISTS(
+      SELECT
+        1
+      FROM cte__all_hashes
+      WHERE
+        cte__all_hashes._record__hash = cte__changed_data._record__hash
+    )
 )
 SELECT
   @STAR__LIST(table_name := das.raw.raw__@source),
@@ -106,6 +122,6 @@ SELECT
   _record__valid_to,
   _record__version,
   _record__is_current
-FROM cte__scd
+FROM cte__final
 WHERE
   1 = 1 AND _record__updated_at BETWEEN @start_ts AND @end_ts
