@@ -52,7 +52,7 @@ def build_primary_hook_expression(primary_hook: Optional[str]) -> Optional[exp.E
         exp.column(primary_hook),
         exp.Literal.string("~epoch__valid_from|"),
         exp.cast(exp.column("_record__valid_from"), exp.DataType.build("text"))
-    ).as_(f"_pit_{primary_hook}")
+    ).as_(f"_pit{primary_hook}")
 
 # --- Hook Processing Functions ---
 def process_hooks(hooks: Any) -> tuple[list, Optional[str], list]:
@@ -147,7 +147,7 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
 
     sql = (
         exp.select(
-            f"_pit_{primary_hook}",
+            f"_pit{primary_hook}",
             *all_hooks,
             *source_columns
         )

@@ -1,5 +1,5 @@
 MODEL (
-  enabled FALSE,
+  enabled TRUE,
   kind VIEW
 );
 

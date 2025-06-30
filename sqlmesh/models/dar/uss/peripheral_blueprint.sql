@@ -1,6 +1,6 @@
 MODEL (
   name @target_table,
-  enabled FALSE,
+  enabled TRUE,
   kind VIEW,
   blueprints (
     (
