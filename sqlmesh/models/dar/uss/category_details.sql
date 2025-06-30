@@ -4,10 +4,10 @@ MODEL (
 );
 
 SELECT
-  _pit_hook__category__id AS _pit_hook__category_detail__id,
+  _pit_hook__category__detail,
   @STAR(
     relation := dab.hook.frame__northwind__category_details,
-    exclude := _pit_hook__category__id,
+    exclude := _pit_hook__category__detail,
     prefix := 'category_details__'
   )
 FROM dab.hook.frame__northwind__category_details
