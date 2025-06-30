@@ -17,6 +17,25 @@ def load_frames(path: str) -> List[Dict[str, Any]]:
     with open(path, 'r') as f:
         return yaml.safe_load(f)
     
+def load_foreign_hooks(path: str) -> List[Dict[str, Any]]:
+    with open(path, 'r') as f:
+        frames = yaml.safe_load(f)
+        for frame in frames:
+            frame['foreign_hooks'] = frame.get('foreign_hooks', [])
+        return frames
+
+def add_foreign_hooks(frames: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    for frame in frames:
+        foreign_hooks = []
+        for hook in frame.get("hooks", []):
+            if not hook.get("primary", False):
+                foreign_hooks.append(hook)
+        for hook in frame.get("composite_hooks", []) or []:
+            if not hook.get("primary", False):
+                foreign_hooks.append(hook)
+        frame["foreign_hooks"] = foreign_hooks
+    return frames
+
 # --- Primary Hook Finder ---
 def find_primary_hook(frame: Dict[str, Any]) -> Optional[str]:
     hooks = frame.get("hooks", [])
@@ -30,7 +49,7 @@ def find_primary_hook(frame: Dict[str, Any]) -> Optional[str]:
 
 # --- Main Entrypoint ---
 frames_path = get_frames_path()
-frames = load_frames(frames_path)
+frames = add_foreign_hooks(load_frames(frames_path))
 
 @model(
     "dar.uss__staging._bridge__@{name}",
@@ -45,7 +64,12 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
     name = evaluator.blueprint_var("name")
     hooks = evaluator.blueprint_var("hooks")
     composite_hooks = evaluator.blueprint_var("composite_hooks")
-    frame = {"hooks": hooks, "composite_hooks": composite_hooks}
+
+    # Compute foreign_hooks: hooks and composite_hooks not flagged as primary
+    foreign_hooks = [h for h in (hooks or []) if not h.get("primary", False)]
+    foreign_hooks += [h for h in (composite_hooks or []) if not h.get("primary", False)]
+
+    frame = {"hooks": hooks, "composite_hooks": composite_hooks, "foreign_hooks": foreign_hooks}
     primary_hook = find_primary_hook(frame)
     if not primary_hook:
         raise ValueError(f"No primary hook found for frame {name}")
@@ -55,6 +79,7 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
         exp.cast(exp.Literal.string(name), exp.DataType.build("text")).as_("peripheral"),
         exp.column(f"_pit{primary_hook}"),
         exp.column(primary_hook),
+        *[exp.column(h["name"]) for h in foreign_hooks],
         exp.column("_record__updated_at"),
         exp.column("_record__valid_from"),
         exp.column("_record__valid_to"),
