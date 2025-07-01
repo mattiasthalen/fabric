@@ -62,24 +62,23 @@ frames = add_foreign_hooks(load_frames(frames_path))
 )
 def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
     name = evaluator.blueprint_var("name")
-    hooks = evaluator.blueprint_var("hooks")
-    composite_hooks = evaluator.blueprint_var("composite_hooks")
+    hooks = evaluator.blueprint_var("hooks") or []
+    composite_hooks = evaluator.blueprint_var("composite_hooks") or []
 
-    # Compute foreign_hooks: hooks and composite_hooks not flagged as primary
-    foreign_hooks = [h for h in (hooks or []) if not h.get("primary", False)]
-    foreign_hooks += [h for h in (composite_hooks or []) if not h.get("primary", False)]
+    frame = {"hooks": hooks, "composite_hooks": composite_hooks}
 
-    frame = {"hooks": hooks, "composite_hooks": composite_hooks, "foreign_hooks": foreign_hooks}
     primary_hook = find_primary_hook(frame)
     if not primary_hook:
         raise ValueError(f"No primary hook found for frame {name}")
+
+    foreign_hooks = [exp.column(hook["name"]) for hook in (*hooks, *composite_hooks) if hook["name"] != primary_hook]
 
     source_table = f"dab.hook.frame__{name}"
     sql = exp.select(
         exp.cast(exp.Literal.string(name), exp.DataType.build("text")).as_("peripheral"),
         exp.column(f"_pit{primary_hook}"),
         exp.column(primary_hook),
-        *[exp.column(h["name"]) for h in foreign_hooks],
+        *foreign_hooks,
         exp.column("_record__updated_at"),
         exp.column("_record__valid_from"),
         exp.column("_record__valid_to"),
