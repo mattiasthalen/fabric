@@ -16,7 +16,7 @@
 
 - name: northwind__category_details
   hooks:
-  - name: _hook__category__id
+  - name: _hook__category__detail
     primary: true
     concept: category
     qualifier: id
@@ -148,6 +148,13 @@
     expression: supplier_id
 
   - name: _hook__category__id
+    primary: false
+    concept: category
+    qualifier: id
+    keyset: northwind.category.id
+    expression: category_id
+
+  - name: _hook__category__detail
     primary: false
     concept: category
     qualifier: id
