@@ -89,23 +89,17 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
 
     # Only keep foreign hooks that are primary in their own frame
     foreign_hooks = [hook for hook in (*hooks, *composite_hooks) if hook["name"] != primary_hook and is_primary_in_frame(hook["name"])]
-    foreign_hook_columns = [exp.column(hook["name"]) for hook in foreign_hooks]
-
-    base_select = [
-        exp.cast(exp.Literal.string(name), exp.DataType.build("text")).as_("peripheral"),
-        exp.column(f"_pit{primary_hook}"),
-        exp.column(primary_hook),
-        *foreign_hook_columns,
-        exp.column("_record__updated_at"),
-        exp.column("_record__valid_from"),
-        exp.column("_record__valid_to"),
-        exp.column("_record__is_current"),
-    ]
-
-    query = exp.select(*base_select).from_(f"dab.hook.frame__{name}")
 
     # Add left joins for each foreign hook, using the foreign frame name
     left_table = f"frame__{name}"
+    joins = []
+    foreign_hook_columns = []
+
+    record__updated_at = [exp.column("_record__updated_at", table=left_table)]
+    record__valid_from = [exp.column("_record__valid_from", table=left_table)]
+    record__valid_to = [exp.column("_record__valid_to", table=left_table)]
+    record__is_current = [exp.column("_record__is_current", table=left_table)]
+
     for hook in foreign_hooks:
         fk = hook["name"]
         foreign_frame_name = get_foreign_frame_name(fk)
@@ -113,31 +107,67 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
         if not foreign_frame_name:
             continue
 
-        right_table = f"dar.uss__staging._bridge__{foreign_frame_name}"
- 
-        query = query.join(
-            right_table,
+        right_table_name = f"_bridge__{foreign_frame_name}"
+        right_table = f"dar.uss__staging.{right_table_name}"
+        right_columns = evaluator.columns_to_types(right_table).keys()
+
+        foreign_pit_hooks = [exp.column(column, table=right_table_name) for column in right_columns if column.startswith("_pit")]
+        foreign_hook_columns.extend(foreign_pit_hooks)
+
+        record__updated_at.append(exp.column("_record__updated_at", table=right_table_name))
+        record__valid_from.append(exp.column("_record__valid_from", table=right_table_name))
+        record__valid_to.append(exp.column("_record__valid_to", table=right_table_name))
+        record__is_current.append(exp.column("_record__is_current", table=right_table_name))
+
+        join = exp.Join(
+            this=right_table,
             on=exp.and_(
                 exp.EQ(
                     this=exp.column(fk, table=left_table),
-                    expression=exp.column(fk, table=right_table)
+                    expression=exp.column(fk, table=right_table_name)
                 ),
                 exp.LT(
                     this=exp.column("_record__valid_from", table=left_table),
-                    expression=exp.column("_record__valid_to", table=right_table)
+                    expression=exp.column("_record__valid_to", table=right_table_name)
                 ),
                 exp.GT(
                     this=exp.column("_record__valid_to", table=left_table),
-                    expression=exp.column("_record__valid_from", table=right_table)
+                    expression=exp.column("_record__valid_from", table=right_table_name)
                 )
             ),
-            join_type="LEFT"
+            kind="LEFT"
         )
 
-    query = query.where(
-        exp.column("_record__updated_at").between(
+        joins.append(join)
+    
+    validity_expression = lambda x, y: exp.func(y, *x) if len(x) > 1 else x[0]
+    record__updated_at = validity_expression(record__updated_at, "GREATEST")
+    record__valid_from = validity_expression(record__valid_from, "GREATEST")
+    record__valid_to = validity_expression(record__valid_to, "LEAST")
+    record__is_current = validity_expression(record__is_current, "LEAST")
+
+    sql = (
+        exp.select(
+            exp.cast(exp.Literal.string(name), exp.DataType.build("text")).as_("peripheral"),
+            exp.column(f"_pit{primary_hook}", table=left_table),
+            exp.column(primary_hook, table=left_table),
+            *foreign_hook_columns,
+            record__updated_at.as_("_record__updated_at"),
+            record__valid_from.as_("_record__valid_from"),
+            record__valid_to.as_("_record__valid_to"),
+            record__is_current.as_("_record__is_current")
+        )
+        .from_(f"dab.hook.frame__{name}")
+    )
+
+    for join in joins:
+        sql = sql.join(join)
+    
+    sql = sql.where(
+        record__updated_at.between(
             low=evaluator.locals["start_ts"],
             high=evaluator.locals["end_ts"]
         )
     )
-    return query
+
+    return sql
