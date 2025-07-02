@@ -118,7 +118,7 @@ def build_sql_select(name: str, source_table: str, source_columns: list[exp.Expr
     sql = (
         exp.select(
             *source_columns,
-            exp.cast(exp.column("_record__hash"), "text").as_("_record__hash"),
+            exp.cast(exp.column("_record__hash"), "varbinary(max)").as_("_record__hash"),
             exp.cast(exp.column("_record__loaded_at"), "timestamp").as_("_record__loaded_at")
         )
         .from_("cte__source")
@@ -142,9 +142,9 @@ def build_sql_select(name: str, source_table: str, source_columns: list[exp.Expr
     "das.raw.@{name}",
     is_sql=True,
     kind=dict(
-        name=ModelKindName.INCREMENTAL_BY_UNIQUE_KEY,
-        unique_key="_record__hash",
-        disable_restatement=True
+        name=ModelKindName.INCREMENTAL_UNMANAGED,
+        disable_restatement=True,
+        #forward_only=True
     ),
     blueprints=generate_blueprints("northwind"),
 )
