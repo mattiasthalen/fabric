@@ -268,7 +268,7 @@ tables:
         data_type: text
         nullable: true
       product_names:
-        data_type: json
+        data_type: text
         nullable: true
       _dlt_load_id:
         data_type: text
