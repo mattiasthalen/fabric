@@ -102,10 +102,11 @@ def to_timestamp(column: exp.Expression) -> exp.Expression:
     )
     return cast
 
-def build_sql_select(source_table: str, source_columns: list[exp.Expression], columns_to_hash: list[str]) -> exp.Expression:
+def build_sql_select(name: str, source_table: str, source_columns: list[exp.Expression], columns_to_hash: list[str]) -> exp.Expression:
     hashed_columns = hash_columns(*[exp.column(alias) for alias in columns_to_hash]).as_("_record__hash")
     loaded_at = to_timestamp(exp.column("_dlt_load_id")).as_("_record__loaded_at")
-    return (
+
+    cte__source = (
         exp.select(
             *source_columns,
             hashed_columns,
@@ -113,6 +114,28 @@ def build_sql_select(source_table: str, source_columns: list[exp.Expression], co
         )
         .from_(source_table)
     )
+
+    sql = (
+        exp.select(
+            *source_columns,
+            exp.cast(exp.column("_record__hash"), "text").as_("_record__hash"),
+            exp.cast(exp.column("_record__loaded_at"), "timestamp").as_("_record__loaded_at")
+        )
+        .from_("cte__source")
+        .with_("cte__source", as_=cte__source)
+        .join(
+            exp.Join(
+                this=f"das.raw.{name}",
+                on=exp.EQ(
+                    this=exp.column("_record__hash", table=f"{name}"),
+                    expression=exp.column("_record__hash", table="cte__source")
+                ),
+                kind="ANTI"
+            )
+        )
+    )
+
+    return sql
 
 # --- Model Entrypoint ---
 @model(
@@ -132,6 +155,6 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
     source_table = f"landing_zone.{schema}.{name}"
     source_columns = build_source_columns(columns)
     columns_to_hash = get_columns_to_hash(source_columns)
-    sql = build_sql_select(source_table, source_columns, columns_to_hash)
+    sql = build_sql_select(name, source_table, source_columns, columns_to_hash)
     
     return sql
