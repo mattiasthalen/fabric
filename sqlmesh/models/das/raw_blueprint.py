@@ -115,20 +115,39 @@ def build_sql_select(name: str, source_table: str, source_columns: list[exp.Expr
         .from_(source_table)
     )
 
+    cte__deduplicated = (
+        exp.select(
+            exp.Star(),
+            exp.Window(
+                this=exp.RowNumber(),
+                partition_by=[exp.column("_record__hash")],
+                order=exp.Order(expressions=[exp.column("_record__loaded_at")])
+            ).as_("_record__hash__version")
+        )
+        .from_("cte__source")
+    )
+
     sql = (
         exp.select(
             *source_columns,
             exp.cast(exp.column("_record__hash"), "varbinary(max)").as_("_record__hash"),
             exp.cast(exp.column("_record__loaded_at"), "timestamp").as_("_record__loaded_at")
         )
-        .from_("cte__source")
+        .from_("cte__deduplicated")
         .with_("cte__source", as_=cte__source)
+        .with_("cte__deduplicated", as_=cte__deduplicated)
+        .where(
+            exp.EQ(
+                this=exp.column("_record__hash__version"),
+                expression=exp.Literal.number("1")
+            )
+        )
         .join(
             exp.Join(
                 this=f"das.raw.{name}",
                 on=exp.EQ(
                     this=exp.column("_record__hash", table=f"{name}"),
-                    expression=exp.column("_record__hash", table="cte__source")
+                    expression=exp.column("_record__hash", table="cte__deduplicated")
                 ),
                 kind="ANTI"
             )
@@ -143,8 +162,7 @@ def build_sql_select(name: str, source_table: str, source_columns: list[exp.Expr
     is_sql=True,
     kind=dict(
         name=ModelKindName.INCREMENTAL_UNMANAGED,
-        disable_restatement=True,
-        #forward_only=True
+        disable_restatement=True
     ),
     blueprints=generate_blueprints("northwind"),
 )
