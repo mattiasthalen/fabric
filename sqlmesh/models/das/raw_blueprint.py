@@ -102,10 +102,11 @@ def to_timestamp(column: exp.Expression) -> exp.Expression:
     )
     return cast
 
-def build_sql_select(source_table: str, source_columns: list[exp.Expression], columns_to_hash: list[str]) -> exp.Expression:
+def build_sql_select(name: str, source_table: str, source_columns: list[exp.Expression], columns_to_hash: list[str]) -> exp.Expression:
     hashed_columns = hash_columns(*[exp.column(alias) for alias in columns_to_hash]).as_("_record__hash")
     loaded_at = to_timestamp(exp.column("_dlt_load_id")).as_("_record__loaded_at")
-    return (
+
+    cte__source = (
         exp.select(
             *source_columns,
             hashed_columns,
@@ -114,13 +115,53 @@ def build_sql_select(source_table: str, source_columns: list[exp.Expression], co
         .from_(source_table)
     )
 
+    cte__deduplicated = (
+        exp.select(
+            exp.Star(),
+            exp.Window(
+                this=exp.RowNumber(),
+                partition_by=[exp.column("_record__hash")],
+                order=exp.Order(expressions=[exp.column("_record__loaded_at")])
+            ).as_("_record__hash__version")
+        )
+        .from_("cte__source")
+    )
+
+    sql = (
+        exp.select(
+            *source_columns,
+            exp.cast(exp.column("_record__hash"), "varbinary(max)").as_("_record__hash"),
+            exp.cast(exp.column("_record__loaded_at"), "timestamp").as_("_record__loaded_at")
+        )
+        .from_("cte__deduplicated")
+        .with_("cte__source", as_=cte__source)
+        .with_("cte__deduplicated", as_=cte__deduplicated)
+        .where(
+            exp.EQ(
+                this=exp.column("_record__hash__version"),
+                expression=exp.Literal.number("1")
+            )
+        )
+        .join(
+            exp.Join(
+                this=f"das.raw.{name}",
+                on=exp.EQ(
+                    this=exp.column("_record__hash", table=f"{name}"),
+                    expression=exp.column("_record__hash", table="cte__deduplicated")
+                ),
+                kind="ANTI"
+            )
+        )
+    )
+
+    return sql
+
 # --- Model Entrypoint ---
 @model(
     "das.raw.@{name}",
     is_sql=True,
     kind=dict(
-        name=ModelKindName.INCREMENTAL_BY_UNIQUE_KEY,
-        unique_key="_record__hash",
+        name=ModelKindName.INCREMENTAL_UNMANAGED,
         disable_restatement=True
     ),
     blueprints=generate_blueprints("northwind"),
@@ -132,6 +173,6 @@ def entrypoint(evaluator: MacroEvaluator) -> str | exp.Expression:
     source_table = f"landing_zone.{schema}.{name}"
     source_columns = build_source_columns(columns)
     columns_to_hash = get_columns_to_hash(source_columns)
-    sql = build_sql_select(source_table, source_columns, columns_to_hash)
+    sql = build_sql_select(name, source_table, source_columns, columns_to_hash)
     
     return sql
