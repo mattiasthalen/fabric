@@ -127,11 +127,11 @@ frames = load_frames(frames_path)
 
 @model(
     "dar.uss__staging._bridge__@{name}",
+    enabled=True,
     is_sql=True,
     kind=dict(
         name=ModelKindName.INCREMENTAL_BY_TIME_RANGE,
         time_column="_record__updated_at",
-        batch_size=int(24*60/5),  # Process one batch per day
     ),
     cron="*/5 * * * *",  # Run every 5 min, the smallest cron supported by SQLMesh
     blueprints=frames,
