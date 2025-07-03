@@ -1,1 +1,3 @@
-Secrets.VariableLibrary/
+*Secret*.VariableLibrary/
+*secret*.VariableLibrary/
+*SECRET*.VariableLibrary/
