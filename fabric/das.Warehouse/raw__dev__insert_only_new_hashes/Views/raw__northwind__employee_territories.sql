@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 85A7260BD3B0DD4AFB4BF80EE531808E6AAB496BACAEE3BE1C8F5E9BC5DD9E96
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [raw__dev__insert_only_new_hashes].[raw__northwind__employee_territories] AS SELECT * FROM [das].[sqlmesh__raw].[raw__raw__northwind__employee_territories__2299366800__dev];

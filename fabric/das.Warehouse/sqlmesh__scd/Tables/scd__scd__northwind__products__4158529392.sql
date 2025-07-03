@@ -1,0 +1,22 @@
+CREATE TABLE [sqlmesh__scd].[scd__scd__northwind__products__4158529392] (
+
+	[product_id] bigint NULL, 
+	[product_name] varchar(max) NULL, 
+	[supplier_id] bigint NULL, 
+	[category_id] bigint NULL, 
+	[quantity_per_unit] varchar(max) NULL, 
+	[unit_price] float NULL, 
+	[units_in_stock] bigint NULL, 
+	[units_on_order] bigint NULL, 
+	[reorder_level] bigint NULL, 
+	[discontinued] bit NULL, 
+	[_dlt_load_id] varchar(max) NULL, 
+	[_dlt_id] varchar(max) NULL, 
+	[_record__hash] varbinary(8000) NULL, 
+	[_record__loaded_at] datetime2(6) NULL, 
+	[_record__updated_at__tmp] datetime2(6) NULL, 
+	[_record__valid_from__tmp] datetime2(6) NULL, 
+	[_record__valid_to__tmp] datetime2(6) NULL, 
+	[_record__version__tmp] bigint NULL, 
+	[_record__is_current__tmp] int NULL
+);

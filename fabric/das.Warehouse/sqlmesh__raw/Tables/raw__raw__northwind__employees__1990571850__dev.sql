@@ -1,0 +1,25 @@
+CREATE TABLE [sqlmesh__raw].[raw__raw__northwind__employees__1990571850__dev] (
+
+	[employee_id] bigint NULL, 
+	[last_name] varchar(8000) NULL, 
+	[first_name] varchar(8000) NULL, 
+	[title] varchar(8000) NULL, 
+	[title_of_courtesy] varchar(8000) NULL, 
+	[birth_date] datetime2(6) NULL, 
+	[hire_date] datetime2(6) NULL, 
+	[address] varchar(8000) NULL, 
+	[city] varchar(8000) NULL, 
+	[region] varchar(8000) NULL, 
+	[postal_code] varchar(8000) NULL, 
+	[country] varchar(8000) NULL, 
+	[home_phone] varchar(8000) NULL, 
+	[extension] varchar(8000) NULL, 
+	[photo] varchar(8000) NULL, 
+	[notes] varchar(8000) NULL, 
+	[reports_to] bigint NULL, 
+	[photo_path] varchar(8000) NULL, 
+	[_dlt_load_id] varchar(8000) NULL, 
+	[_dlt_id] varchar(8000) NULL, 
+	[_record__hash] varbinary(8000) NULL, 
+	[_record__loaded_at] datetime2(6) NULL
+);

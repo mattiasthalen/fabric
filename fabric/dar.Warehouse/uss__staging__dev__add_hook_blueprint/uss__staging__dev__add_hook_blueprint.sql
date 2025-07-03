@@ -1,0 +1,1 @@
+CREATE SCHEMA uss__staging__dev__add_hook_blueprint;

@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 1E71E933E3AAF33095BACBEE6F91B225E0262B43C877BA929AF07631A067001E
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [uss__dev__insert_only_new_hashes].[northwind__regions] AS SELECT * FROM [dar].[sqlmesh__uss].[uss__northwind__regions__427738898__dev];

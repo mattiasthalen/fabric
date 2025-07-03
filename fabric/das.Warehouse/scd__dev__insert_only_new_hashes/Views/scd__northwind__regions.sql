@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 4B6ABAA1AFD1F9C3C3CDD36329D8C6F928356246AB9CC3AB7ACB733D2A94A9EE
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [scd__dev__insert_only_new_hashes].[scd__northwind__regions] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__regions__318520137__dev];

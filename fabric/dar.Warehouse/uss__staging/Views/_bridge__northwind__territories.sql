@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) FFA6B40768FFA880D9673FDF2B952E6F34A19954ACA16FAD7F93DB6835950EE3
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [uss__staging].[_bridge__northwind__territories] AS SELECT * FROM [dar].[sqlmesh__uss__staging].[uss__staging___bridge__northwind__territories__1247211590];

@@ -1,0 +1,26 @@
+CREATE TABLE [sqlmesh__scd].[scd__scd__northwind__orders__4030163425] (
+
+	[order_id] bigint NULL, 
+	[customer_id] varchar(max) NULL, 
+	[employee_id] bigint NULL, 
+	[order_date] datetime2(6) NULL, 
+	[required_date] datetime2(6) NULL, 
+	[shipped_date] datetime2(6) NULL, 
+	[ship_via] bigint NULL, 
+	[freight] float NULL, 
+	[ship_name] varchar(max) NULL, 
+	[ship_address] varchar(max) NULL, 
+	[ship_city] varchar(max) NULL, 
+	[ship_postal_code] varchar(max) NULL, 
+	[ship_country] varchar(max) NULL, 
+	[_dlt_load_id] varchar(max) NULL, 
+	[_dlt_id] varchar(max) NULL, 
+	[ship_region] varchar(max) NULL, 
+	[_record__hash] varchar(max) NULL, 
+	[_record__loaded_at] datetime2(6) NULL, 
+	[_record__updated_at] datetime2(6) NULL, 
+	[_record__valid_from] datetime2(6) NULL, 
+	[_record__valid_to] datetime2(6) NULL, 
+	[_record__version] bigint NULL, 
+	[_record__is_current] int NULL
+);

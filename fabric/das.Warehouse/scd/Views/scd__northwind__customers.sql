@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 5F394474F9078FE1C8C13387C8A211FC331DB7AFA96E6B18AD0F22DE780A88EA
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [scd].[scd__northwind__customers] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__customers__3973966363];

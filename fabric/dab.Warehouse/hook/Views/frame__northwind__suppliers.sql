@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 22DDCCEBDFB99BD3A5A18BB26EC970CF0C6D34F998C569CEA2CD89C9E58C1BF5
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [hook].[frame__northwind__suppliers] AS SELECT * FROM [dab].[sqlmesh__hook].[hook__frame__northwind__suppliers__3076187796];

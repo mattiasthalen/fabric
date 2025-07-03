@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) D38D6BEF253256027B215802E1D481C0020F082A9DE98C8F6039C49C4303087F
+/* SQLMESH_PLAN: f67284e7d5294bf2aa9db069ada3b03c */ CREATE   VIEW [hook__dev__qualify_hashes_in_raw].[frame__northwind__categories] AS SELECT * FROM [dab].[sqlmesh__hook].[hook__frame__northwind__categories__691103569];

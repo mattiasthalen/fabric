@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 1AFE2CA1864D1B9634A47709DBE6646D8FB22A04CFFB12E8EFB510B90A7F0CBC
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [uss__staging].[_bridge__northwind__shippers] AS SELECT * FROM [dar].[sqlmesh__uss__staging].[uss__staging___bridge__northwind__shippers__3424856985];

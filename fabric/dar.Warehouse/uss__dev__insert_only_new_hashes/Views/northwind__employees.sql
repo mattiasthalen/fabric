@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 1C70302726BEFAAB3C390A5EFBF0D30176692B18F42FAD17B7FC9AD86707C6EE
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [uss__dev__insert_only_new_hashes].[northwind__employees] AS SELECT * FROM [dar].[sqlmesh__uss].[uss__northwind__employees__3729113726__dev];

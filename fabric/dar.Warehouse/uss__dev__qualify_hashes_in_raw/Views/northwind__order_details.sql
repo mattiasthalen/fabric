@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 43644BF21355D41683B6358065E5E413773A30E519C733B9A5AC86672E956B55
+/* SQLMESH_PLAN: f67284e7d5294bf2aa9db069ada3b03c */ CREATE   VIEW [uss__dev__qualify_hashes_in_raw].[northwind__order_details] AS SELECT * FROM [dar].[sqlmesh__uss].[uss__northwind__order_details__3596986493];

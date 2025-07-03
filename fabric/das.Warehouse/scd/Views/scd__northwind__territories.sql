@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) CF22F0881348EF08890F2B7625D9FC1D28B4E689AED6485FEF655F2008F0586F
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [scd].[scd__northwind__territories] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__territories__3853262289];

@@ -1,0 +1,1 @@
+CREATE SCHEMA scd__dev__insert_only_new_hashes;

@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 69137DFDAD07264E6EA4A8C71A9BF97819D785C31015121798D35C4299AD332E
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [uss__staging__dev__insert_only_new_hashes].[_bridge__northwind__regions] AS SELECT * FROM [dar].[sqlmesh__uss__staging].[uss__staging___bridge__northwind__regions__3615002531__dev];

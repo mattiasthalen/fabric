@@ -1,0 +1,1 @@
+CREATE SCHEMA sqlmesh__raw;

@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 8352012FFE5306EB807C61A7E11BDB3EDBB8C433A0038E84C586232EF8729BDE
+/* SQLMESH_PLAN: f67284e7d5294bf2aa9db069ada3b03c */ CREATE   VIEW [scd__dev__qualify_hashes_in_raw].[scd__northwind__employee_territories] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__employee_territories__2518737539];

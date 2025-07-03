@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 9F838FD7A2640FDFC896ED86FC61153D9CFC6F6FA8B83099850BA9773F358EC5
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [uss__dev__insert_only_new_hashes].[northwind__territories] AS SELECT * FROM [dar].[sqlmesh__uss].[uss__northwind__territories__200030367__dev];

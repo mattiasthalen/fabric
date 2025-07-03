@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 4C6C534D7DACFA89054BDA04BE8627AF928527647E1D6F35F6B432FE3C194E27
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [uss].[_bridge__as_of] AS SELECT * FROM [dar].[sqlmesh__uss].[uss___bridge__as_of__2043739200];

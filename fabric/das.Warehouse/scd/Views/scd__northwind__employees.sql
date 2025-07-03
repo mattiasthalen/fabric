@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 0CBD42AC0DD63573553C15DEAC4031771B9D996BD0124B41312446E4FE5BF5E4
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [scd].[scd__northwind__employees] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__employees__2221339616];

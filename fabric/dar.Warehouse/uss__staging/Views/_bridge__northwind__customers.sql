@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) E800BECF84876EC0DEBE0271B26643018948FCB9658887D94A49E278799ACD7D
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [uss__staging].[_bridge__northwind__customers] AS SELECT * FROM [dar].[sqlmesh__uss__staging].[uss__staging___bridge__northwind__customers__2559651469];

@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 741DA2938CADF898BA155D783774417E5B34748C152026C642E32584F1C12C1F
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [scd].[scd__northwind__category_details] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__category_details__2551203038];

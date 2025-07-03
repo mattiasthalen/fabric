@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 47C805781E3FE0C946C1FD9BADF953473C1CC59491089761A75F30F26A039643
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [raw__dev__insert_only_new_hashes].[raw__northwind__categories] AS SELECT * FROM [das].[sqlmesh__raw].[raw__raw__northwind__categories__1918246840__dev];

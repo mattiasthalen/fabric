@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 74D239F47DE619AF0DADFEB71526AC4488B712477B69AFF5BDF6D671BB7DDB7D
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [hook].[frame__northwind__employee_territories] AS SELECT * FROM [dab].[sqlmesh__hook].[hook__frame__northwind__employee_territories__1266209278];

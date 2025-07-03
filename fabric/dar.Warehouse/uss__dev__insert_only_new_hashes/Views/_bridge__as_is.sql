@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 4C6C534D7DACFA89054BDA04BE8627AF928527647E1D6F35F6B432FE3C194E27
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [uss__dev__insert_only_new_hashes].[_bridge__as_is] AS SELECT * FROM [dar].[sqlmesh__uss].[uss___bridge__as_is__3975969804__dev];

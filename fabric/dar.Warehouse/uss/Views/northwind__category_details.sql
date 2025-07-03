@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 3FF882ABC63E3ACBE2C4867F21EC363F618900280FF1746D564EDAA51530A145
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [uss].[northwind__category_details] AS SELECT * FROM [dar].[sqlmesh__uss].[uss__northwind__category_details__3471775302];

@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) E279266C8AF198A46771E5B1894B5F1AA42DF68B6BA41F181BEA4F3287085CDB
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [raw].[raw__northwind__employees] AS SELECT * FROM [das].[sqlmesh__raw].[raw__raw__northwind__employees__1317181996];

@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) DEDAC8157E7193CF84F1BDE9D73083FB673B8BCD6A55EACFA403D0BEABA9B0BA
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [hook__dev__insert_only_new_hashes].[frame__northwind__regions] AS SELECT * FROM [dab].[sqlmesh__hook].[hook__frame__northwind__regions__744219178__dev];

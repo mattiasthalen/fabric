@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) CF22F0881348EF08890F2B7625D9FC1D28B4E689AED6485FEF655F2008F0586F
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [scd__dev__insert_only_new_hashes].[scd__northwind__territories] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__territories__4219427167__dev];

@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 9469E22875E61DA9ECFE0AC3CE0A37868A0E818497CB0E461618C991EC002AF0
+/* SQLMESH_PLAN: c834311e50684deea7634cb804ec8592 */ CREATE   VIEW [hook].[frame__northwind__order_details] AS SELECT * FROM [dab].[sqlmesh__hook].[hook__frame__northwind__order_details__3059808875];

@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 45551C59DC32A21C6D48BDC505BC1B0CB86AFCBCFB6E415218FE75C66B5D1D36
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [hook__dev__insert_only_new_hashes].[frame__northwind__products] AS SELECT * FROM [dab].[sqlmesh__hook].[hook__frame__northwind__products__1125388279__dev];

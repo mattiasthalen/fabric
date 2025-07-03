@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) F37DFDC73CC4771AC8FC30A3C9ED74D2F10B1AC16306D2A95241D77BFA130999
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [scd__dev__insert_only_new_hashes].[scd__northwind__categories] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__categories__11077861__dev];

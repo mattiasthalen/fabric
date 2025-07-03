@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 49A1AA171D13DFFD335BC02BBB0AEA7512E7A580B66F778FBDBD38B59C318570
+/* SQLMESH_PLAN: f67284e7d5294bf2aa9db069ada3b03c */ CREATE   VIEW [raw__dev__qualify_hashes_in_raw].[raw__northwind__order_details] AS SELECT * FROM [das].[sqlmesh__raw].[raw__raw__northwind__order_details__5560152];

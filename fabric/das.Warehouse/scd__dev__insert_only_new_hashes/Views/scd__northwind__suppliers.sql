@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 8C1723822EC120E6EF63E98C1E57D62D4687BAB3D4CB16F01223C56DECBD8CA7
+/* SQLMESH_PLAN: 2bb65682d5394d05a4e1fa0356b10afb */ CREATE   VIEW [scd__dev__insert_only_new_hashes].[scd__northwind__suppliers] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__suppliers__3041451442__dev];
