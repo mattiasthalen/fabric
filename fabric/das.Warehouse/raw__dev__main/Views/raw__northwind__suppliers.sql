@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 52C8FDD7B99FE30C4A343015F730B8845541CFBF868A100BA82D3585E6C023F8
+/* SQLMESH_PLAN: 8a48d67a4b39406997933ac05cd14751 */ CREATE   VIEW [raw__dev__main].[raw__northwind__suppliers] AS SELECT * FROM [das].[sqlmesh__raw].[raw__raw__northwind__suppliers__3152078384];

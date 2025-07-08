@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) 8C1723822EC120E6EF63E98C1E57D62D4687BAB3D4CB16F01223C56DECBD8CA7
+/* SQLMESH_PLAN: 8a48d67a4b39406997933ac05cd14751 */ CREATE   VIEW [scd__dev__main].[scd__northwind__suppliers] AS SELECT * FROM [das].[sqlmesh__scd].[scd__scd__northwind__suppliers__3244218230];

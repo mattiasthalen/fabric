@@ -1,0 +1,2 @@
+-- Auto Generated (Do not modify) F75EDF14E4C5F4D98441AE9786B14C341B1B542654F137BD68AC3C842CA04564
+/* SQLMESH_PLAN: 8a48d67a4b39406997933ac05cd14751 */ CREATE   VIEW [raw__dev__main].[raw__northwind__regions] AS SELECT * FROM [das].[sqlmesh__raw].[raw__raw__northwind__regions__758633169];
