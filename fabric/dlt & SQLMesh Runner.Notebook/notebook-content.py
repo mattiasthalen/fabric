@@ -38,10 +38,16 @@ CREDENTIALS__AZURE_CLIENT_ID = None
 CREDENTIALS__AZURE_CLIENT_SECRET = None
 CREDENTIALS__AZURE_STORAGE_ACCOUNT_NAME = "onelake"
 CREDENTIALS__AZURE_ACCOUNT_HOST = "onelake.blob.fabric.microsoft.com"
+
 FABRIC__WAREHOUSE_ENDPOINT = None
 FABRIC__SQL_DB_ENDPOINT = None
 FABRIC__SQL_DB_NAME = None
+
 DESTINATION__BUCKET_URL = "/lakehouse/default/Tables"
+
+GIT__URL = "https://dev.azure.com/mattiasthalen/fabric/_git/adss.git"
+GIT__USER = None
+GIT__TOKEN = None
 
 # METADATA ********************
 
@@ -64,7 +70,7 @@ import shutil
 import subprocess
 import zipfile
 
-from azure.identity import ClientSecretCredential
+from urllib.parse import urlparse
 
 # METADATA ********************
 
@@ -169,6 +175,9 @@ env_vars = {
     "FABRIC__SQL_DB_ENDPOINT": FABRIC__SQL_DB_ENDPOINT,
     "FABRIC__SQL_DB_NAME": FABRIC__SQL_DB_NAME,
     "DESTINATION__BUCKET_URL": DESTINATION__BUCKET_URL,
+    "GIT__URL": GIT__URL,
+    "GIT__USER": GIT__USER,
+    "GIT__TOKEN": GIT__TOKEN
 }
 
 keyvault = "https://mattiasthalen-fabric.vault.azure.net/"
@@ -177,10 +186,16 @@ for key, value in env_vars.items():
 
     if not value:
         secret = key.replace("_", "-")
-        value = notebookutils.credentials.getSecret(keyvault, secret)
+        
+        try:
+            value = notebookutils.credentials.getSecret(keyvault, secret)
+        except:
+            value = None
 
-    os.environ[key] = value
-    print(f"{key} = {os.getenv(key)}")
+    if value:
+        os.environ[key] = value
+
+    print(f"{key} = {value}")
 
 # METADATA ********************
 
@@ -195,39 +210,32 @@ for key, value in env_vars.items():
 
 # CELL ********************
 
-def clone_from_devops(code_path):
-    org = "mattiasthalen"
-    project = "fabric"
-    repo = "adss.git"
+def get_devops_zip_url(repo_url, branch="main"):
+    """
+    Constructs the Azure DevOps API zip download URL from a standard repository URL.
 
-    # Get Bearer token
-    tenant_id = os.getenv("CREDENTIALS__AZURE_TENANT_ID")
-    client_id = os.getenv("CREDENTIALS__AZURE_CLIENT_ID")
-    client_secret = os.getenv("CREDENTIALS__AZURE_CLIENT_SECRET")
+    Args:
+        repo_url (str): The Azure DevOps repository URL (e.g., "https://dev.azure.com/org/project/_git/repo").
+        branch (str, optional): The branch to download. Defaults to "main".
 
-    credential = ClientSecretCredential(tenant_id, client_id, client_secret)
-    token = credential.get_token("499b84ac-1321-427f-aa17-267ca6975798/.default").token
+    Returns:
+        str: The API endpoint to download the specified branch as a zip.
 
-    # Clean up and prepare the code_path directory
-    if os.path.isdir(code_path):
-        shutil.rmtree(code_path)
-    os.makedirs(code_path, exist_ok=True)
+    Raises:
+        ValueError: If the repo_url format is invalid.
+    """
+    parsed = urlparse(repo_url)
+    path_parts = parsed.path.strip("/").split("/")
 
-    # Build the URL for downloading the repo as a zip
-    zip_url = (
-        f"https://dev.azure.com/{org}/{project}/_apis/git/repositories/{repo}/items"
-        "?scopePath=/&$format=zip&download=true&api-version=7.0"
+    if len(path_parts) < 4:
+        raise ValueError("Invalid Azure DevOps repo URL format")
+
+    org, project, _, repo = path_parts
+
+    return (
+        f"https://dev.azure.com/{org}/{project}/_apis/git/repositories/"
+        f"{repo}/items?scopePath=/&$format=zip&download=true&versionDescriptor.version={branch}"
     )
-
-    headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(zip_url, headers=headers)
-    response.raise_for_status()
-
-    # Extract the zip to code_path
-    with zipfile.ZipFile(io.BytesIO(response.content)) as zf:
-        zf.extractall(code_path)
-
-    return None
 
 # METADATA ********************
 
@@ -238,17 +246,211 @@ def clone_from_devops(code_path):
 
 # CELL ********************
 
-def clone_from_github(code_path):
+def get_github_zip_url(repo_url, branch="main"):
+    """
+    Constructs the GitHub API zip download URL from a standard repository URL.
 
-    repo_url = "https://github.com/mattiasthalen/fabric"
+    Args:
+        repo_url (str): The GitHub repository URL (e.g., "https://github.com/owner/repo").
+        branch (str, optional): The branch to download. Defaults to "main".
 
-    # Trunctate the repo dir
+    Returns:
+        str: The API endpoint to download the specified branch as a zip.
+
+    Raises:
+        ValueError: If the repo_url format is invalid.
+    """
+    parsed = urlparse(repo_url)
+    path_parts = parsed.path.strip("/").split("/")
+
+    if len(path_parts) < 2:
+        raise ValueError("Invalid GitHub repo URL format")
+
+    owner, repo = path_parts[:2]
+    repo = repo.replace(".git", "")
+
+    return f"https://api.github.com/repos/{owner}/{repo}/zipball/{branch}"
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
+def get_zip_url(repo_url, branch="main"):
+    """
+    Determines the platform from the repo URL and dispatches to the appropriate zip download URL constructor.
+
+    Args:
+        repo_url (str): The repository URL (GitHub or Azure DevOps).
+        branch (str, optional): The branch to download. Defaults to "main".
+
+    Returns:
+        str: The constructed zip download URL.
+
+    Raises:
+        ValueError: If the platform in repo_url is unknown.
+    """
+    parsed = urlparse(repo_url)
+
+    if "dev.azure.com" in parsed.netloc:
+        return get_devops_zip_url(repo_url, branch)
+
+    elif "github.com" in parsed.netloc:
+        return get_github_zip_url(repo_url, branch)
+
+    else:
+        raise ValueError("Unknown platform in repo_url.")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
+def fetch_zip_bytes(zip_url, username, token):
+    """
+    Downloads the zip archive from the specified URL using basic authentication.
+
+    Args:
+        zip_url (str): The zip download URL.
+        username (str): Username or login (GitHub or Azure DevOps).
+        token (str): Personal Access Token (PAT) for authentication.
+
+    Returns:
+        bytes: The zip file contents as bytes.
+
+    Raises:
+        requests.HTTPError: If the HTTP request fails.
+    """
+    resp = requests.get(zip_url, auth=(username, token))
+    resp.raise_for_status()
+
+    return resp.content
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
+def extract_zip_bytes(zip_bytes, code_path):
+    """
+    Extracts the contents of a zip archive (provided as bytes) to a directory.
+
+    Args:
+        zip_bytes (bytes): The bytes of the zip archive.
+        code_path (str): The path to extract files into.
+
+    Returns:
+        list of str: List of top-level entries (files/directories) in code_path after extraction.
+
+    Side effects:
+        - Overwrites/deletes existing code_path directory if it exists.
+    """
     if os.path.isdir(code_path):
         shutil.rmtree(code_path)
-        os.mkdir(code_path)
 
-    # Create a shallow clone
-    run_subprocess(["git", "clone", "--depth", "1", repo_url, code_path])
+    os.makedirs(code_path, exist_ok=True)
+
+    with zipfile.ZipFile(io.BytesIO(zip_bytes)) as zf:
+        zf.extractall(code_path)
+
+    return os.listdir(code_path)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
+def flatten_single_root_dir(code_path):
+    """
+    If code_path contains a single directory, moves all its contents up one level and removes the directory.
+
+    Args:
+        code_path (str): The path to check and flatten if necessary.
+
+    Returns:
+        list of str: All file paths (recursively) in code_path after flattening.
+    """
+    entries = os.listdir(code_path)
+
+    if len(entries) == 1:
+        root_dir = os.path.join(code_path, entries[0])
+        if os.path.isdir(root_dir):
+            for item in os.listdir(root_dir):
+                shutil.move(os.path.join(root_dir, item), code_path)
+            os.rmdir(root_dir)
+
+    # Return all files recursively for convenience
+    return [
+        os.path.join(root, name)
+        for root, dirs, files in os.walk(code_path)
+        for name in files
+    ]
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
+def extract_zip_bytes_to_dir(zip_bytes, code_path):
+    """
+    Pipeline: Extracts zip bytes to directory and flattens single-root-directory structure if present.
+
+    Args:
+        zip_bytes (bytes): The bytes of the zip archive.
+        code_path (str): The path to extract files into.
+
+    Returns:
+        list of str: All file paths (recursively) in code_path after extraction and flattening.
+    """
+    extract_zip_bytes(zip_bytes, code_path)
+    return flatten_single_root_dir(code_path)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
+def download_zip_and_extract(repo_url, username, token, code_path, branch="main"):
+    """
+    Downloads a branch as a zip archive from a GitHub or Azure DevOps repo, extracts it, and flattens the directory if needed.
+
+    Args:
+        repo_url (str): The repository URL (GitHub or Azure DevOps).
+        username (str): Username or login (GitHub or Azure DevOps).
+        token (str): Personal Access Token (PAT) for authentication.
+        code_path (str): The directory to extract the archive to.
+        branch (str, optional): The branch to download. Defaults to "main".
+
+    Returns:
+        list of str: All file paths (recursively) in code_path after extraction and flattening.
+    """
+    zip_url = get_zip_url(repo_url, branch)
+    zip_bytes = fetch_zip_bytes(zip_url, username, token)
+    return extract_zip_bytes_to_dir(zip_bytes, code_path)
 
 # METADATA ********************
 
@@ -260,8 +462,13 @@ def clone_from_github(code_path):
 # CELL ********************
 
 code_path = "/tmp/code"
-#clone_from_devops(code_path)
-clone_from_github(code_path)
+files = download_zip_and_extract(
+    repo_url=os.getenv("GIT__URL"),
+    username=os.getenv("GIT__USER"),
+    token=os.getenv("GIT__TOKEN"),
+    code_path=code_path
+)
+
 list_directory_contents(code_path)
 
 # METADATA ********************
