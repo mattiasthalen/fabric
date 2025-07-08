@@ -3,10 +3,10 @@ name = "fabric"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = "~=3.11"
+requires-python = ">=3.11.0, <3.12"
 dependencies = [
     "dlt[az,deltalake,filesystem,parquet]>=1.12.1",
     "enlighten>=1.14.1",
     "networkx>=3.5",
-    "sqlmesh[mssql-odbc, lsp, web] @ git+https://github.com/fresioAS/sqlmesh.git@add_fabric_warehouse",
+    "sqlmesh[mssql-odbc, lsp, web] @ git+https://github.com/mattiasthalen/sqlmesh.git@add-fabric-engine-adapter",
 ]
