@@ -56,10 +56,15 @@ DESTINATION__BUCKET_URL = "/lakehouse/default/Tables"
 
 # CELL ********************
 
+import io
 import notebookutils
 import os
+import requests
 import shutil
 import subprocess
+import zipfile
+
+from azure.identity import ClientSecretCredential
 
 # METADATA ********************
 
@@ -190,16 +195,73 @@ for key, value in env_vars.items():
 
 # CELL ********************
 
+def clone_from_devops(code_path):
+    org = "mattiasthalen"
+    project = "fabric"
+    repo = "adss.git"
+
+    # Get Bearer token
+    tenant_id = os.getenv("CREDENTIALS__AZURE_TENANT_ID")
+    client_id = os.getenv("CREDENTIALS__AZURE_CLIENT_ID")
+    client_secret = os.getenv("CREDENTIALS__AZURE_CLIENT_SECRET")
+
+    credential = ClientSecretCredential(tenant_id, client_id, client_secret)
+    token = credential.get_token("499b84ac-1321-427f-aa17-267ca6975798/.default").token
+
+    # Clean up and prepare the code_path directory
+    if os.path.isdir(code_path):
+        shutil.rmtree(code_path)
+    os.makedirs(code_path, exist_ok=True)
+
+    # Build the URL for downloading the repo as a zip
+    zip_url = (
+        f"https://dev.azure.com/{org}/{project}/_apis/git/repositories/{repo}/items"
+        "?scopePath=/&$format=zip&download=true&api-version=7.0"
+    )
+
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(zip_url, headers=headers)
+    response.raise_for_status()
+
+    # Extract the zip to code_path
+    with zipfile.ZipFile(io.BytesIO(response.content)) as zf:
+        zf.extractall(code_path)
+
+    return None
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
+def clone_from_github(code_path):
+
+    repo_url = "https://github.com/mattiasthalen/fabric"
+
+    # Trunctate the repo dir
+    if os.path.isdir(code_path):
+        shutil.rmtree(code_path)
+        os.mkdir(code_path)
+
+    # Create a shallow clone
+    run_subprocess(["git", "clone", "--depth", "1", repo_url, code_path])
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "jupyter_python"
+# META }
+
+# CELL ********************
+
 code_path = "/tmp/code"
-repo_url = "https://github.com/mattiasthalen/fabric"
-
-# Trunctate the repo dir
-if os.path.isdir(code_path):
-    shutil.rmtree(code_path)
-
-# Create a shallow clone
-run_subprocess(["git", "clone", "--depth", "1", repo_url, code_path])
-
+#clone_from_devops(code_path)
+clone_from_github(code_path)
 list_directory_contents(code_path)
 
 # METADATA ********************
