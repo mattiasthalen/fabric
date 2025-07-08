@@ -9,9 +9,7 @@ from sqlmesh.core.model.kind import ModelKindName
 
 # --- File and Frame Utilities ---
 def get_frames_path() -> str:
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    # Correct path: from sqlmesh/models/dar/uss/bridge_blueprint.py to sqlmesh/models/dab/hook/frames.yml
-    return os.path.abspath(os.path.join(script_dir, '../../dab/hook/frames.yml'))
+    return "sqlmesh/models/dab/hook/frames.yml"
 
 def load_frames(path: str) -> List[Dict[str, Any]]:
     with open(path, 'r') as f:
