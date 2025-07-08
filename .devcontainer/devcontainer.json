@@ -5,6 +5,7 @@
 		"ghcr.io/jlaundry/devcontainer-features/mssql-odbc-driver:1": {},
 		"ghcr.io/va-h/devcontainers-features/uv:1": {}
 	},
+	"initializeCommand": "[ ! -f .env ] && touch .env || true",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -14,8 +15,5 @@
 			]
 		}
 	},
-	"mounts": [
-		"source=${env:HOME}/.ssh,target=/home/codespace/.ssh,type=bind,consistency=cached"
-	],
 	"runArgs": ["--env-file", ".env"]
 }
