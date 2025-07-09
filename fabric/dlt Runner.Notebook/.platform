@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
     "type": "Notebook",
-    "displayName": "SQLMesh Runner",
+    "displayName": "dlt Runner",
     "description": "New notebook"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "c2c871c7-92c0-b5b8-4b78-369021a04d77"
+    "logicalId": "170c85a1-50ed-823a-4754-15160285050e"
   }
 }

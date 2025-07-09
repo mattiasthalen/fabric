@@ -21,7 +21,7 @@
 
 # MARKDOWN ********************
 
-# # dlt & SQLMesh Runner
+# # dlt Runner
 
 # MARKDOWN ********************
 
@@ -29,6 +29,7 @@
 
 # PARAMETERS CELL ********************
 
+dlt_pipelines = ["dlt/northwind/northwind.py"]
 env = "dev"
 
 CODE_PATH = "/tmp/code"
@@ -40,10 +41,7 @@ CREDENTIALS__AZURE_CLIENT_SECRET = None
 CREDENTIALS__AZURE_STORAGE_ACCOUNT_NAME = "onelake"
 CREDENTIALS__AZURE_ACCOUNT_HOST = "onelake.blob.fabric.microsoft.com"
 
-FABRIC__WAREHOUSE_ENDPOINT = None
-FABRIC__SQL_DB_ENDPOINT = None
-FABRIC__SQL_DB_NAME = None
-
+DESTINATION__BUCKET_URL = "/lakehouse/default/Tables"
 
 # METADATA ********************
 
@@ -58,7 +56,8 @@ FABRIC__SQL_DB_NAME = None
 
 # CELL ********************
 
-!pip install "sqlmesh[fabric] @ git+https://github.com/mattiasthalen/sqlmesh.git@add-fabric-engine-adapter"
+!pip install "dlt[deltalake,filesystem,parquet]>=1.12.1"
+!pip install "enlighten>=1.14.1"
 
 # METADATA ********************
 
@@ -110,23 +109,6 @@ def run_subprocess(commands, cwd=None):
 # META   "language_group": "jupyter_python"
 # META }
 
-# CELL ********************
-
-def install_packages(packages):
-    commands = []
-
-    for package in packages:
-        commands.append(["pip", "install", package])
-
-    run_subprocess(commands)
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "jupyter_python"
-# META }
-
 # MARKDOWN ********************
 
 # ## Setup Environment
@@ -134,12 +116,13 @@ def install_packages(packages):
 # CELL ********************
 
 env_vars = {
+    "CODE_PATH": CODE_PATH,
+    "CREDENTIALS__AZURE_TENANT_ID": CREDENTIALS__AZURE_TENANT_ID,
     "CREDENTIALS__AZURE_CLIENT_ID": CREDENTIALS__AZURE_CLIENT_ID,
     "CREDENTIALS__AZURE_CLIENT_SECRET": CREDENTIALS__AZURE_CLIENT_SECRET,
-    "FABRIC__WAREHOUSE_ENDPOINT": FABRIC__WAREHOUSE_ENDPOINT,
-    "FABRIC__SQL_DB_ENDPOINT": FABRIC__SQL_DB_ENDPOINT,
-    "FABRIC__SQL_DB_NAME": FABRIC__SQL_DB_NAME,
-    "CODE_PATH": CODE_PATH,
+    "CREDENTIALS__AZURE_STORAGE_ACCOUNT_NAME": CREDENTIALS__AZURE_STORAGE_ACCOUNT_NAME,
+    "CREDENTIALS__AZURE_ACCOUNT_HOST": CREDENTIALS__AZURE_ACCOUNT_HOST,
+    "DESTINATION__BUCKET_URL": DESTINATION__BUCKET_URL,
 }
 
 for key, value in env_vars.items():
@@ -166,7 +149,7 @@ for key, value in env_vars.items():
 
 # MARKDOWN ********************
 
-# ## Run dlt & SQLMesh
+# ## Run dlt
 
 # CELL ********************
 
@@ -182,15 +165,15 @@ notebookutils.notebook.run("Retrieve Codebase")
 # CELL ********************
 
 code_path = os.getenv("CODE_PATH")
-project_path = os.path.join(code_path, "sqlmesh")
 
-commands = [
-    ["sqlmesh", "migrate"],
-    ["sqlmesh", "plan", env, "--auto-apply"],
-    ["sqlmesh", "run", env]
-]
+if not isinstance(dlt_pipelines, list):
+    dlt_pipelines = [dlt_pipelines]
 
-run_subprocess(commands, cwd=project_path)
+commands = []
+for pipeline in dlt_pipelines:
+    commands.append(["python", pipeline, env])
+
+run_subprocess(commands, code_path)
 
 # METADATA ********************
 
