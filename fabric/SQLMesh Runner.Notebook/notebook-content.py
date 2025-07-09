@@ -27,7 +27,7 @@
 
 # MARKDOWN ********************
 
-# # dlt & SQLMesh Runner
+# # SQLMesh Runner
 
 # MARKDOWN ********************
 
