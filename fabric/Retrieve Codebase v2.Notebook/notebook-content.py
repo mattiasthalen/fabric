@@ -21,7 +21,7 @@
 
 # MARKDOWN ********************
 
-# # dlt & SQLMesh Runner
+# # Retrieve Codebase
 
 # MARKDOWN ********************
 
@@ -29,21 +29,11 @@
 
 # PARAMETERS CELL ********************
 
-env = "dev"
-
 CODE_PATH = "/tmp/code"
 KEYVAULT = "https://mattiasthalen-fabric.vault.azure.net/"
-
-CREDENTIALS__AZURE_TENANT_ID = None
-CREDENTIALS__AZURE_CLIENT_ID = None
-CREDENTIALS__AZURE_CLIENT_SECRET = None
-CREDENTIALS__AZURE_STORAGE_ACCOUNT_NAME = "onelake"
-CREDENTIALS__AZURE_ACCOUNT_HOST = "onelake.blob.fabric.microsoft.com"
-
-FABRIC__WAREHOUSE_ENDPOINT = None
-FABRIC__SQL_DB_ENDPOINT = None
-FABRIC__SQL_DB_NAME = None
-
+GIT__URL = "https://dev.azure.com/mattiasthalen/fabric/_git/adss.git"
+GIT__USER = None
+GIT__TOKEN = None
 
 # METADATA ********************
 
@@ -58,20 +48,15 @@ FABRIC__SQL_DB_NAME = None
 
 # CELL ********************
 
-!pip install "sqlmesh[fabric] @ git+https://github.com/mattiasthalen/sqlmesh.git@add-fabric-engine-adapter"
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "jupyter_python"
-# META }
-
-# CELL ********************
-
+import io
 import notebookutils
 import os
+import requests
+import shutil
 import subprocess
+import zipfile
+
+from urllib.parse import urlparse, urlunparse
 
 # METADATA ********************
 
@@ -86,39 +71,29 @@ import subprocess
 
 # CELL ********************
 
-def run_subprocess(commands, cwd=None):
-    if not isinstance(commands[0], (list, tuple)):
-        commands = [commands]
+def list_directory_contents(path):
+    """
+    Lists the contents of a directory, separating directories from files.
+    
+    Args:
+        path (str): Path to the directory to list
+        
+    Returns:
+        dict: A dictionary with 'directories' and 'files' keys
+    """
+    all_entries = os.listdir(path)
+    
+    directories = []
+    files = []
+    
+    for entry in all_entries:
+        full_path = os.path.join(path, entry)
+        if os.path.isdir(full_path):
+            directories.append(entry)
+        else:
+            files.append(entry)
 
-    for command in commands:
-        print(f"Executing subprocess: {command}")
-        result = subprocess.run(
-            command,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.PIPE, 
-            text=True,
-            cwd=cwd
-        )
-
-        if result.returncode != 0:
-            print(result)
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "jupyter_python"
-# META }
-
-# CELL ********************
-
-def install_packages(packages):
-    commands = []
-
-    for package in packages:
-        commands.append(["pip", "install", package])
-
-    run_subprocess(commands)
+    return [*sorted(directories), *sorted(files)]
 
 # METADATA ********************
 
@@ -134,12 +109,10 @@ def install_packages(packages):
 # CELL ********************
 
 env_vars = {
-    "CREDENTIALS__AZURE_CLIENT_ID": CREDENTIALS__AZURE_CLIENT_ID,
-    "CREDENTIALS__AZURE_CLIENT_SECRET": CREDENTIALS__AZURE_CLIENT_SECRET,
-    "FABRIC__WAREHOUSE_ENDPOINT": FABRIC__WAREHOUSE_ENDPOINT,
-    "FABRIC__SQL_DB_ENDPOINT": FABRIC__SQL_DB_ENDPOINT,
-    "FABRIC__SQL_DB_NAME": FABRIC__SQL_DB_NAME,
     "CODE_PATH": CODE_PATH,
+    "GIT__URL": GIT__URL,
+    "GIT__USER": GIT__USER,
+    "GIT__TOKEN": GIT__TOKEN,
 }
 
 for key, value in env_vars.items():
@@ -166,11 +139,30 @@ for key, value in env_vars.items():
 
 # MARKDOWN ********************
 
-# ## Run dlt & SQLMesh
+# ## Retrieve Codebase
 
 # CELL ********************
 
-notebookutils.notebook.run("Retrieve Codebase v2")
+code_path = os.getenv("CODE_PATH")
+repo_url=os.getenv("GIT__URL")
+username=os.getenv("GIT__USER")
+token=os.getenv("GIT__TOKEN")
+
+if os.path.isdir(code_path):
+        shutil.rmtree(code_path)
+
+parsed_url = urlparse(repo_url)
+netloc = f"{username}:{token}@{parsed_url.netloc}"
+url_with_auth = urlunparse(parsed_url._replace(netloc=netloc))
+
+cmd = [
+    "git", "clone",
+    "--branch", "main",
+    "--depth", "1",
+    url_with_auth,
+    code_path
+]
+subprocess.run(cmd, check=True)
 
 # METADATA ********************
 
@@ -181,16 +173,7 @@ notebookutils.notebook.run("Retrieve Codebase v2")
 
 # CELL ********************
 
-code_path = os.getenv("CODE_PATH")
-project_path = os.path.join(code_path, "sqlmesh")
-
-commands = [
-    ["sqlmesh", "migrate"],
-    ["sqlmesh", "plan", env, "--auto-apply"],
-    ["sqlmesh", "run", env]
-]
-
-run_subprocess(commands, cwd=project_path)
+list_directory_contents(code_path)
 
 # METADATA ********************
 
