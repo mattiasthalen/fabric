@@ -9,8 +9,14 @@
 # META   },
 # META   "dependencies": {
 # META     "lakehouse": {
-# META       "default_lakehouse_name": "",
-# META       "default_lakehouse_workspace_id": ""
+# META       "default_lakehouse": "13e742fe-590f-42d3-b62a-ccb7dd31b7e9",
+# META       "default_lakehouse_name": "landing_zone",
+# META       "default_lakehouse_workspace_id": "daba8301-ad97-44a1-a555-56cbe5bcd423",
+# META       "known_lakehouses": [
+# META         {
+# META           "id": "13e742fe-590f-42d3-b62a-ccb7dd31b7e9"
+# META         }
+# META       ]
 # META     },
 # META     "environment": {
 # META       "environmentId": "42a74380-f32a-9edd-4dae-147387133737",
@@ -29,7 +35,7 @@
 
 # PARAMETERS CELL ********************
 
-CODE_PATH = "/tmp/code"
+CODE_PATH = "/lakehouse/default/Files/code"
 KEYVAULT = "https://mattiasthalen-fabric.vault.azure.net/"
 GIT__URL = "https://dev.azure.com/mattiasthalen/fabric/_git/adss.git"
 GIT__USER = None
@@ -148,21 +154,27 @@ repo_url=os.getenv("GIT__URL")
 username=os.getenv("GIT__USER")
 token=os.getenv("GIT__TOKEN")
 
-if os.path.isdir(code_path):
-        shutil.rmtree(code_path)
-
 parsed_url = urlparse(repo_url)
 netloc = f"{username}:{token}@{parsed_url.netloc}"
 url_with_auth = urlunparse(parsed_url._replace(netloc=netloc))
 
-cmd = [
-    "git", "clone",
-    "--branch", "main",
-    "--depth", "1",
-    url_with_auth,
-    code_path
-]
-subprocess.run(cmd, check=True)
+if os.path.isdir(code_path) and os.path.isdir(os.path.join(code_path, ".git")):
+    # Directory exists and looks like a git repo: pull latest changes
+    cmd = ["git", "pull"]
+    print(f"Pulling latest changes in {code_path}...")
+    subprocess.run(cmd, check=True, cwd=code_path)
+
+else:
+    # Directory doesn't exist or is not a git repo: do a shallow clone
+    cmd = [
+        "git", "clone",
+        "--branch", "main",
+        "--depth", "1",
+        url_with_auth,
+        code_path
+    ]
+    print(f"Cloning into {code_path}...")
+    subprocess.run(cmd, check=True)
 
 # METADATA ********************
 

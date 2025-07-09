@@ -9,8 +9,14 @@
 # META   },
 # META   "dependencies": {
 # META     "lakehouse": {
-# META       "default_lakehouse_name": "",
-# META       "default_lakehouse_workspace_id": ""
+# META       "default_lakehouse": "13e742fe-590f-42d3-b62a-ccb7dd31b7e9",
+# META       "default_lakehouse_name": "landing_zone",
+# META       "default_lakehouse_workspace_id": "daba8301-ad97-44a1-a555-56cbe5bcd423",
+# META       "known_lakehouses": [
+# META         {
+# META           "id": "13e742fe-590f-42d3-b62a-ccb7dd31b7e9"
+# META         }
+# META       ]
 # META     },
 # META     "environment": {
 # META       "environmentId": "42a74380-f32a-9edd-4dae-147387133737",
@@ -32,7 +38,7 @@
 dlt_pipelines = ["dlt/northwind/northwind.py"]
 env = "dev"
 
-CODE_PATH = "/tmp/code"
+CODE_PATH = "/lakehouse/default/Files/code"
 KEYVAULT = "https://mattiasthalen-fabric.vault.azure.net/"
 
 CREDENTIALS__AZURE_TENANT_ID = None
@@ -71,36 +77,6 @@ DESTINATION__BUCKET_URL = "/lakehouse/default/Tables"
 import notebookutils
 import os
 import subprocess
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "jupyter_python"
-# META }
-
-# MARKDOWN ********************
-
-# ## Helper Functions
-
-# CELL ********************
-
-def run_subprocess(commands, cwd=None):
-    if not isinstance(commands[0], (list, tuple)):
-        commands = [commands]
-
-    for command in commands:
-        print(f"Executing subprocess: {command}")
-        result = subprocess.run(
-            command,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.PIPE, 
-            text=True,
-            cwd=cwd
-        )
-
-        if result.returncode != 0:
-            print(result)
 
 # METADATA ********************
 
@@ -153,27 +129,16 @@ for key, value in env_vars.items():
 
 # CELL ********************
 
-notebookutils.notebook.run("Retrieve Codebase v2")
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "jupyter_python"
-# META }
-
-# CELL ********************
-
 code_path = os.getenv("CODE_PATH")
 
 if not isinstance(dlt_pipelines, list):
     dlt_pipelines = [dlt_pipelines]
 
-commands = []
 for pipeline in dlt_pipelines:
-    commands.append(["python", pipeline, env])
-
-run_subprocess(commands, code_path)
+    print(f"Executing pipeline: {pipeline}...")
+    
+    cmd = ["python", pipeline, env]
+    subprocess.run(cmd, check=True, cwd=code_path)
 
 # METADATA ********************
 
