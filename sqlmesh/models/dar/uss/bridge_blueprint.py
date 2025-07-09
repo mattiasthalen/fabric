@@ -9,7 +9,8 @@ from sqlmesh.core.model.kind import ModelKindName
 
 # --- File and Frame Utilities ---
 def get_frames_path() -> str:
-    return "sqlmesh/models/dab/hook/frames.yml"
+    # Use local symlink to avoid absolute path differences between environments
+    return "frames.yml"
 
 def load_frames(path: str) -> List[Dict[str, Any]]:
     with open(path, 'r') as f:
