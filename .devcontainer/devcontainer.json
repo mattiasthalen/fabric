@@ -16,5 +16,8 @@
 			]
 		}
 	},
+	"mounts": [
+		"source=${env:HOME}/.ssh,target=/home/codespace/.ssh,type=bind,consistency=cached"
+	],
 	"runArgs": ["--env-file", ".env"]
 }
