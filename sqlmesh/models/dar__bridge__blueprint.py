@@ -9,13 +9,11 @@ from sqlmesh.core.model.kind import ModelKindName
 
 # --- File and Frame Utilities ---
 def get_frames_path() -> str:
-    # Use local symlink to avoid absolute path differences between environments
-    return "frames.yml"
+    return os.path.join(os.path.dirname(__file__), "frames.yml")
 
 def load_frames(path: str) -> List[Dict[str, Any]]:
     with open(path, 'r') as f:
         return yaml.safe_load(f)
-    
 
 # --- Primary Hook Finder ---
 def find_primary_hook(frame: Dict[str, Any]) -> Optional[str]:
