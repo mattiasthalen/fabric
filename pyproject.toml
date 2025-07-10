@@ -8,5 +8,10 @@ dependencies = [
     "dlt[az,deltalake,filesystem,parquet]>=1.12.1",
     "enlighten>=1.14.1",
     "networkx>=3.5",
-    "sqlmesh[mssql-odbc, lsp, web] @ git+https://github.com/mattiasthalen/sqlmesh.git@add-fabric-engine-adapter",
+    "sqlmesh[fabric, lsp, web] @ git+https://github.com/mattiasthalen/sqlmesh.git@feat/add-fabric-engine",
+]
+
+[tool.uv]
+override-dependencies = [
+    "sqlglot @ git+https://github.com/mattiasthalen/sqlglot@fix/fabric-ensure-varchar-max"
 ]
