@@ -12,7 +12,8 @@
 			"extensions": [
 				"eamodio.gitlens",
 				"GitHub.copilot",
-				"tobikodata.sqlmesh"
+				"tobikodata.sqlmesh",
+				"Anthropic.claude-code"
 			]
 		}
 	},
