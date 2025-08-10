@@ -1,6 +1,7 @@
 import getpass
 import os
 import subprocess
+from dotenv import load_dotenv
 
 from sqlmesh.core.config import (
     Config,
@@ -16,12 +17,16 @@ from sqlmesh.core.config import (
 from sqlmesh.core.user import User, UserRole
 from sqlmesh.integrations.github.cicd.config import GithubCICDBotConfig, MergeMethod
 
-azure_client_id = os.getenv("CREDENTIALS__AZURE_CLIENT_ID", "Missing")
-azure_client_secret = os.getenv("CREDENTIALS__AZURE_CLIENT_SECRET", "Missing")
+load_dotenv(override=True)
 
+azure__tenant_id = os.getenv("CREDENTIALS__AZURE_TENANT_ID", "Missing")
+azure__client_id = os.getenv("CREDENTIALS__AZURE_CLIENT_ID", "Missing")
+azure__client_secret = os.getenv("CREDENTIALS__AZURE_CLIENT_SECRET", "Missing")
+
+fabric__workspace_id = os.getenv("FABRIC__WORKSPACE_ID", "Missing")
 fabric__warehouse_endpoint = os.getenv("FABRIC__WAREHOUSE_ENDPOINT", "Missing")
-fabric__sql_db_endpoint = os.getenv("FABRIC__SQL_DB_ENDPOINT", "Missing")
-fabric__sql_db_name = os.getenv("FABRIC__SQL_DB_NAME", "Missing")
+fabric__database_endpoint = os.getenv("FABRIC__DATABASE_ENDPOINT", "Missing")
+fabric__database_name = os.getenv("FABRIC__DATABASE", "Missing")
 
 def get_current_branch():
     try:
@@ -38,28 +43,30 @@ default_environment = f"dev__{branch}".replace('-', '_') if branch else "dev"
 print(f"Environment is set to: {default_environment}.")
 
 config = Config(
-    project="adventure-works",
+    project="analytical-data-storage-system",
     default_target_environment=default_environment,
     gateways={
         "fabric": GatewayConfig(
             connection=FabricConnectionConfig(
                 host=fabric__warehouse_endpoint,
-                user=azure_client_id,
-                password=azure_client_secret,
+                user=azure__client_id,
+                password=azure__client_secret,
                 database="das",
                 timeout=120,
                 login_timeout=120,
                 driver="pyodbc",
                 driver_name="ODBC Driver 18 for SQL Server",
+                tenant_id=azure__tenant_id,
+                workspace_id=fabric__workspace_id,
                 odbc_properties={
                     "Authentication": "ActiveDirectoryServicePrincipal"
                 }
             ),
             state_connection=MSSQLConnectionConfig(
-                host=fabric__sql_db_endpoint,
-                user=azure_client_id,
-                password=azure_client_secret,
-                database=fabric__sql_db_name,
+                host=fabric__database_endpoint,
+                user=azure__client_id,
+                password=azure__client_secret,
+                database=fabric__database_name,
                 timeout=120,
                 login_timeout=120,
                 driver="pyodbc",

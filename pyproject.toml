@@ -6,7 +6,8 @@ readme = "README.md"
 requires-python = ">=3.11.0, <3.12"
 dependencies = [
     "dlt[az,deltalake,filesystem,parquet]>=1.12.1",
+    "dotenv>=0.9.9",
     "enlighten>=1.14.1",
     "networkx>=3.5",
-    "sqlmesh[fabric, lsp] @ git+https://github.com/fresioAS/sqlmesh.git@feat/add_fabric_warehouse",
+    "sqlmesh[fabric, lsp] @ git+https://github.com/fresioAS/sqlmesh.git@add_fabric_warehouse",
 ]
