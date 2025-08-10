@@ -10,7 +10,7 @@ def get_frames_path() -> str:
     """Returns the absolute path to the frames.yml file."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
     # Correct path: from sqlmesh/models/dar/uss/bridge__as_of__blueprint.py to sqlmesh/models/dab/hook/frames.yml
-    return os.path.abspath(os.path.join(script_dir, '../../dab/hook/frames.yml'))
+    return os.path.abspath(os.path.join(script_dir, "frames.yml"))
 
 def load_frames(path: str) -> List[Dict[str, Any]]:
     """Loads frames from a YAML file."""
