@@ -48,6 +48,7 @@ config = Config(
     gateways={
         "fabric": GatewayConfig(
             connection=FabricConnectionConfig(
+                concurrent_tasks=1,
                 host=fabric__warehouse_endpoint,
                 user=azure__client_id,
                 password=azure__client_secret,
